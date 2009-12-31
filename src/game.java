@@ -138,8 +138,8 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		//setting
 		stage_Score = 0;
 		total_Score = 0;	//initialize game score
-		player_Hitpoint = 3;	
-		boss_Hitpoint = 10;
+		player_Hitpoint = 10;	
+		boss_Hitpoint = 3;
 		  
 		player_Speed = 5; 
 		missile_Speed = 7;
@@ -255,15 +255,11 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			
 			//enemy shoot
 			if ( cnt % 100 == 0){
-				
 				if(en.type != 4)
 				{
 					ms = new Missile (enemy_missile_img, en.x, en.y + 10, enemy_missile_Speed, 1,0);
 					Missile_List.add(ms);
-				}
-				
-			
-						
+				}	
 			}
 			if(en.type == 4)	//boss shot
 			{
@@ -319,9 +315,20 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			if(Crash(x, y, en.x, en.y, plane_img, tmp)){
 
 				player_Hitpoint --; 
-				GameOver(player_Hitpoint);				
-				Enemy_List.remove(i); 
-								
+				GameOver(player_Hitpoint);	
+				
+				if(en.type == 4 && boss_Status == 1){	//boss
+					if(boss_Hitpoint < 1){
+						Enemy_List.remove(i);
+						boss_Status = 2;	//disappeared
+						stage_clear = true;
+					}
+					boss_Hitpoint -= 1;
+				}
+				else
+					Enemy_List.remove(i);
+				
+							
 				ex = new Explosion(en.x + tmp.getWidth(null) / 2, en.y + tmp.getHeight(null) / 2, 0 );
 				Explosion_List.add(ex); 
 				ex = new Explosion(x+plane_img.getWidth(null) / 2, y+plane_img.getHeight(null)/ 2, 1 );
