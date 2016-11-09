@@ -1,5 +1,5 @@
 #오픈소스 프로젝트 시작
-##8team - Shooting Game
+###8team - Shooting Game
 
 #코드
 ###Frame_make.java
@@ -13,7 +13,6 @@
 * 키보드를 사용한 이벤트 발생
 
 * plane_img.png 사용
-
 
 
 
