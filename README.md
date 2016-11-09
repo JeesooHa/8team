@@ -2,13 +2,13 @@
 ##8team - Shooting Game
 
 #코드
-1. Frame_make.java
+###Frame_make.java
 
 * JAVA GUI 프로그램을 하기 위한 기초학습
 
 
 
-2. game.java
+###game.java
 
 * 키보드를 사용한 이벤트 발생
 
