@@ -11,6 +11,7 @@ public class Frame_make {
 }
 
 class Frame_make_sub extends JFrame{ 
+<<<<<<< HEAD
 
 	int f_width = 800; 
 	int f_height = 600;
@@ -38,5 +39,38 @@ class Frame_make_sub extends JFrame{
 	}
 	
 	public void start(){
+=======
+	
+	int f_width = 800; 
+	int f_height = 600; 
+	
+	Frame_make_sub(){
+	
+		init(); 
+		start();
+	
+		setTitle("test frame"); 
+		setSize(f_width, f_height); 
+		
+		
+		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+		
+		
+		int f_xpos = (int)(screen.getWidth() / 2 - f_width / 2);
+		int f_ypos = (int)(screen.getHeight() / 2 - f_height / 2);
+		
+
+		setLocation(f_xpos, f_ypos);
+		setResizable(false); 
+		setVisible(true); 
+	}
+
+	public void init(){
+		
+	}
+	
+	public void start(){ 
+
+>>>>>>> 98e5fa297460f10b91b24651aa4b107d37799ea6
 	}
 }
