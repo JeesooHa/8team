@@ -28,6 +28,9 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	Toolkit tk = Toolkit.getDefaultToolkit();
 	Image plane_img = tk.getImage("images/plane_img.png"); //image path
 	
+	//for double buffering
+	Image buffImage; 
+	Graphics buffg; 
 	
 	game_Frame(){	//conductor
 
@@ -59,8 +62,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		addKeyListener(this); //keyboard event
-		
+		addKeyListener(this); //keyboard event	
 		th = new Thread(this);  // make thread
 		th.start();  // thread start
 
@@ -68,8 +70,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 
 	public void run(){ 
 
-		try{ 
-			
+		try{ 		
 			while(true){ 
 				KeyProcess(); //get the keyboard value to update position
 				repaint(); 		//repaint plane using new position
@@ -80,13 +81,22 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		
 	}	
 
-	public void paint(Graphics g){
-		
-		g.clearRect(0, 0, f_width, f_height);
-		g.drawImage(plane_img, x, y, this);
-		
+	public void paint(Graphics g){		
+		buffImage = createImage(f_width, f_height); //set double buffer size
+		buffg = buffImage.getGraphics();
+		update(g);
 	}
 	
+	public void update(Graphics g){
+		Draw_Char();
+		g.drawImage(buffImage, 0, 0, this); //draw image from buffer
+	}
+
+	public void Draw_Char(){ 
+		buffg.clearRect(0, 0, f_width, f_height);
+		buffg.drawImage(plane_img, x, y, this);
+	}
+
 	public void keyPressed(KeyEvent e){	//keyboard push event
 
 		switch(e.getKeyCode()){
