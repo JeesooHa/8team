@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.*;
 
 public class game {
 	
@@ -13,8 +14,8 @@ public class game {
 
 class game_Frame extends JFrame implements KeyListener, Runnable{ 
 
-	int f_width = 800;
-	int f_height = 600;
+	int f_width;
+	int f_height;
  
 	int x, y; // position of plane
 	
@@ -23,14 +24,22 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	boolean KeyDown = false;
 	boolean KeyLeft = false;
 	boolean KeyRight = false;
+	boolean KeySpace = false; //missile
 
 	Thread th; 
+	
 	Toolkit tk = Toolkit.getDefaultToolkit();
-	Image plane_img = tk.getImage("images/plane_img.png"); //image path
+	Image plane_img; 
+	Image missile_img;
+	
+	//to save shot missile
+	ArrayList Missile_List = new ArrayList();
 	
 	//for double buffering
 	Image buffImage; 
 	Graphics buffg; 
+	
+	Missile ms;	
 	
 	game_Frame(){	//conductor
 
@@ -55,6 +64,13 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	public void init(){	//initial position
 		x = 100; 
 		y = 100;
+		f_width = 800;
+		f_height = 600;
+		
+		//load images
+		plane_img = tk.getImage("images/plane_img.png"); 
+		missile_img = tk.getImage("images/missile_img.png");
+	
 	}
 	
 	
@@ -73,6 +89,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		try{ 		
 			while(true){ 
 				KeyProcess(); //get the keyboard value to update position
+				MissileProcess();
 				repaint(); 		//repaint plane using new position
 				Thread.sleep(20); //delay time
 			}
@@ -80,7 +97,14 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		}catch (Exception e){}
 		
 	}	
-
+	
+	public void MissileProcess(){ 
+		if ( KeySpace == true ){ 
+			ms = new Missile(x, y); //set missile position
+			Missile_List.add(ms);   //add missile to list
+		}
+	}
+	
 	public void paint(Graphics g){		
 		buffImage = createImage(f_width, f_height); //set double buffer size
 		buffg = buffImage.getGraphics();
@@ -89,12 +113,30 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	
 	public void update(Graphics g){
 		Draw_Char();
+		Draw_Missile(); 
 		g.drawImage(buffImage, 0, 0, this); //draw image from buffer
 	}
 
 	public void Draw_Char(){ 
 		buffg.clearRect(0, 0, f_width, f_height);
 		buffg.drawImage(plane_img, x, y, this);
+	}
+	
+	public void Draw_Missile(){ 
+		for (int i = 0 ; i < Missile_List.size(); ++i){
+			
+			//get missile position
+			ms = (Missile) (Missile_List.get(i)); 
+			
+			//draw missile image to the current position
+			buffg.drawImage(missile_img, ms.pos.x + 150, ms.pos.y + 30, this); 
+
+			ms.move();	//move missile
+	
+			if ( ms.pos.x > f_width ){ 
+				Missile_List.remove(i); 
+			}
+		}
 	}
 
 	public void keyPressed(KeyEvent e){	//keyboard push event
@@ -112,6 +154,9 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			case KeyEvent.VK_RIGHT :
 				KeyRight = true;
 				break;
+			case KeyEvent.VK_SPACE : //missile
+				KeySpace = true;
+				break;				
 		}
 	}
 	
@@ -130,6 +175,9 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			case KeyEvent.VK_RIGHT :
 				KeyRight = false;
 				break;
+			case KeyEvent.VK_SPACE : //missile
+				KeySpace = false;
+				break;
 		}
 	}
 	
@@ -142,5 +190,19 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		if(KeyLeft == true) x -= 5;
 		if(KeyRight == true) x += 5;
 		
+	}
+}
+
+
+class Missile{ 
+
+	Point pos; //missile position variable
+ 
+	Missile(int x, int y){ //get missile position
+		pos = new Point(x, y); 
+	}
+
+	public void move(){ //move missile
+		pos.x += 20; 
 	}
 }
