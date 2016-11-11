@@ -14,7 +14,9 @@
 
 * plane_img.png 사용
 
+* missile_img.png 사용
 
+* spacebar를 누를 경우 미사일 발사
 
 
 #참고 사이트
