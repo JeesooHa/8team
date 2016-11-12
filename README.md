@@ -18,6 +18,8 @@
 
 * spacebar를 누를 경우 미사일 발사
 
+* 적 이미지 추가 - 추후에 격추 이벤트 추가
+
 
 #참고 사이트
 >[link_to_source_code_reference](http://blog.naver.com/dosem321/40170781167#)
