@@ -25,21 +25,26 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	boolean KeyLeft = false;
 	boolean KeyRight = false;
 	boolean KeySpace = false; //missile
+	
+	int cnt;	//loop
 
 	Thread th; 
 	
 	Toolkit tk = Toolkit.getDefaultToolkit();
 	Image plane_img; 
 	Image missile_img;
+	Image enemy_img;
 	
 	//to save shot missile
 	ArrayList Missile_List = new ArrayList();
+	ArrayList Enemy_List = new ArrayList();	//multi enemy
 	
 	//for double buffering
 	Image buffImage; 
 	Graphics buffg; 
 	
 	Missile ms;	
+	Enemy en;
 	
 	game_Frame(){	//conductor
 
@@ -70,6 +75,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		//load images
 		plane_img = tk.getImage("images/plane_img.png"); 
 		missile_img = tk.getImage("images/missile_img.png");
+		enemy_img = tk.getImage("images/ufo_img.jpg");
 	
 	}
 	
@@ -89,9 +95,11 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		try{ 		
 			while(true){ 
 				KeyProcess(); //get the keyboard value to update position
+				EnemyProcess();
 				MissileProcess();
 				repaint(); 		//repaint plane using new position
 				Thread.sleep(20); //delay time
+				cnt++;
 			}
 			
 		}catch (Exception e){}
@@ -105,6 +113,32 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		}
 	}
 	
+	
+	public void EnemyProcess(){
+
+		for (int i = 0 ; i < Enemy_List.size() ; ++i ){ 
+			en = (Enemy)(Enemy_List.get(i)); 
+	
+			en.move(); //move enemy
+			if(en.x < -200){
+				Enemy_List.remove(i); 
+			}
+		}
+		
+		if ( cnt % 300 == 0 ){ //make enemy
+			en = new Enemy(f_width + 100, 100);
+			Enemy_List.add(en); 
+		
+			en = new Enemy(f_width + 100, 300);
+			Enemy_List.add(en);
+
+			en = new Enemy(f_width + 100, 500);
+			Enemy_List.add(en);
+		}
+
+	}
+	
+	
 	public void paint(Graphics g){		
 		buffImage = createImage(f_width, f_height); //set double buffer size
 		buffg = buffImage.getGraphics();
@@ -113,6 +147,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	
 	public void update(Graphics g){
 		Draw_Char();
+		Draw_Enemy();
 		Draw_Missile(); 
 		g.drawImage(buffImage, 0, 0, this); //draw image from buffer
 	}
@@ -139,6 +174,14 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		}
 	}
 
+	
+	public void Draw_Enemy(){ 
+		for (int i = 0 ; i < Enemy_List.size() ; ++i ){
+			en = (Enemy)(Enemy_List.get(i));
+			buffg.drawImage(enemy_img, en.x, en.y, this);	
+		}
+	}
+	
 	public void keyPressed(KeyEvent e){	//keyboard push event
 
 		switch(e.getKeyCode()){
@@ -204,5 +247,20 @@ class Missile{
 
 	public void move(){ //move missile
 		pos.x += 20; 
+	}
+}
+
+
+class Enemy{ 
+	int x;
+	int y;
+
+	Enemy(int x, int y){
+		this.x = x;
+		this.y = y;
+	}
+	
+	public void move(){
+		x -= 5;
 	}
 }
