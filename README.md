@@ -1,7 +1,7 @@
 #오픈소스 프로젝트 시작
 ###8team - Shooting Game
 
-#게임 실행 방법
+##게임 실행 방법
 
 8team 폴더을 다운은 후 start.exe 실행
 
