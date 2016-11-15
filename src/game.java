@@ -52,6 +52,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	Image explo_img; 
 	Image missile_img;
 	Image enemy_img;
+	Image enemy_missile_img;
 	
 	//to save shot missile
 	ArrayList Missile_List = new ArrayList();
@@ -98,7 +99,8 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		enemy_img = new ImageIcon("images/enemy2.png").getImage();	
 		background_img = new ImageIcon("images/background1.jpg").getImage();
 		explo_img = new ImageIcon("images/enemy_explosion.png").getImage();
-			
+		enemy_missile_img = new ImageIcon("images/enemy_shot.png").getImage();
+		
 		//setting
 		game_Score = 0;	//initialize game score
 		player_Hitpoint = 3;	
@@ -106,7 +108,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		player_Speed = 5; 
 		missile_Speed = 11; 
 		fire_Speed = 10; 
-		enemy_Speed = 7;
+		enemy_Speed = 3;
 		
 	}
 		
@@ -136,7 +138,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			player_Status = 1;
 			
 			if( ( cnt % fire_Speed ) == 0){			
-				ms = new Missile(x + 155, y + 32,missile_Speed); //set missile position
+				ms = new Missile(x + 155, y + 32,missile_Speed,0); //set missile position
 				Missile_List.add(ms);   //add missile to list
 			}		
 			
@@ -146,13 +148,22 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			ms = (Missile) Missile_List.get(i);
 			ms.move();
 			
-			if ( ms.x > f_width - 20 ){
+			//end of main frame
+			if ( ms.x > f_width - 20||ms.x<0||ms.y<0||ms.y>f_height){
 				Missile_List.remove(i);
 			}
 			
+			//enemy missile shot
+			if (Crash(x, y, ms.x, ms.y, plane_img, missile_img) && ms.who == 1 ) {
+				player_Hitpoint --;
+				ex = new Explosion(x + plane_img.getWidth(null) / 2, y + plane_img.getHeight(null) / 2, 1);
+				Explosion_List.add(ex);
+				Missile_List.remove(i);
+			}
+				
 			for (int j = 0 ; j < Enemy_List.size(); ++ j){
 				en = (Enemy) Enemy_List.get(j);
-				if (Crash(ms.x, ms.y, en.x, en.y, missile_img, enemy_img)){
+				if (Crash(ms.x, ms.y, en.x, en.y, missile_img, enemy_img)&&ms.who==0){
 					Missile_List.remove(i);
 					Enemy_List.remove(j);
 					
@@ -176,6 +187,12 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			en.move(); //move enemy
 			if(en.x < -200){
 				Enemy_List.remove(i); 
+			}
+			
+			//enemy shoot
+			if ( cnt % 50 == 0){
+				ms = new Missile (en.x, en.y + 10, missile_Speed, 1);
+				Missile_List.add(ms);			
 			}
 			
 			//crashed with enemy
@@ -266,7 +283,12 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			//get missile position
 			ms = (Missile) (Missile_List.get(i)); 			
 			//draw missile image to the current position
-			buffg.drawImage(missile_img, ms.x, ms.y, this); 
+			
+			if(ms.who == 0) //plane
+				buffg.drawImage(missile_img, ms.x, ms.y, this); 
+			
+			if(ms.who == 1) //enemy
+				buffg.drawImage(enemy_missile_img, ms.x, ms.y, this); 
 		}
 	}
 
@@ -377,15 +399,20 @@ class Missile{
 
 	//missile position variable
 	int x,y,speed;
- 
-	Missile(int x, int y, int speed){ //get missile position
+	int who;	// 0: plane, 1: enemy
+	
+	Missile(int x, int y, int speed,int who){ //get missile position
 		this.x = x;
 		this.y = y;
 		this.speed = speed;
+		this.who = who;
 	}
 
 	public void move(){ //move missile
-		x += speed; 
+		if(this.who == 0)
+			x += speed; 
+		else
+			x -= speed;
 	}
 }
 
