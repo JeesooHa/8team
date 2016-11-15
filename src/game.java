@@ -2,11 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-import java.io.*; 
-import javax.imageio.*;
-import java.awt.image.*;
 
-public class game {	
+public class game {
+	
 	public static void main(String[] ar){
 		
 		game_Frame fms = new game_Frame();
@@ -28,10 +26,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	boolean KeyRight = false;
 	boolean KeySpace = false; //missile
 	
-	int cnt;	//enemy made loop
-	
-	int e_w, e_h; //enemy size
-	int m_w, m_h; //missile size
+	int cnt;	//loop
 
 	Thread th; 
 	
@@ -42,7 +37,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	
 	//to save shot missile
 	ArrayList Missile_List = new ArrayList();
-	ArrayList Enemy_List = new ArrayList();	//multiple enemy
+	ArrayList Enemy_List = new ArrayList();	//multi enemy
 	
 	//for double buffering
 	Image buffImage; 
@@ -81,12 +76,6 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		plane_img = tk.getImage("images/plane_img.png"); 
 		missile_img = tk.getImage("images/missile_img.png");
 		enemy_img = tk.getImage("images/ufo_img.jpg");
-		
-		e_w = ImageWidthValue("images/ufo_img.jpg");
-		e_h = ImageHeightValue("images/ufo_img.jpg");
-				
-		m_w = ImageWidthValue("images/missile_img.png"); 
-		m_h = ImageHeightValue("images/missile_img.png");	
 	
 	}
 	
@@ -119,27 +108,9 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	
 	public void MissileProcess(){ 
 		if ( KeySpace == true ){ 
-			ms = new Missile(x + 155, y + 32); //set missile position
+			ms = new Missile(x, y); //set missile position
 			Missile_List.add(ms);   //add missile to list
 		}
-		
-		for ( int i = 0 ; i < Missile_List.size() ; ++i){
-			ms = (Missile) Missile_List.get(i);
-			ms.move();
-			
-			if ( ms.x > f_width - 20 ){
-				Missile_List.remove(i);
-			}
-			
-			for (int j = 0 ; j < Enemy_List.size(); ++ j){
-				en = (Enemy) Enemy_List.get(j);
-				if (Crash(ms.x, ms.y, en.x, en.y, m_w, m_h, e_w, e_h)){
-	
-					Missile_List.remove(i);
-					Enemy_List.remove(j);
-				}
-			}
-		}	
 	}
 	
 	
@@ -164,23 +135,6 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			en = new Enemy(f_width + 100, 500);
 			Enemy_List.add(en);
 		}
-
-	}
-	
-	public boolean Crash(int x1, int y1, int x2, int y2, int w1, int h1, int w2, int h2){
-
-		boolean check = false;
-
-		if ( Math.abs( ( x1 + w1 / 2 )  - ( x2 + w2 / 2 ))  <  ( w2 / 2 + w1 / 2 )  
-		  && Math.abs( ( y1 + h1 / 2 )  - ( y2 + h2 / 2 ))  <  ( h2 / 2 + h1/ 2 ) ){
-
-			check = true;
-		}
-		else{
-			check = false;
-		}
-
-		return check; 
 
 	}
 	
@@ -210,8 +164,13 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			ms = (Missile) (Missile_List.get(i)); 
 			
 			//draw missile image to the current position
-			buffg.drawImage(missile_img, ms.x, ms.y, this); 
+			buffg.drawImage(missile_img, ms.pos.x + 150, ms.pos.y + 30, this); 
 
+			ms.move();	//move missile
+	
+			if ( ms.pos.x > f_width ){ 
+				Missile_List.remove(i); 
+			}
 		}
 	}
 
@@ -275,44 +234,19 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		if(KeyRight == true) x += 5;
 		
 	}
-	
-	
-	public int ImageWidthValue(String file){ 
-		int x = 0;		
-		try{
-			//read image
-			BufferedImage bi = ImageIO.read( new File(file));	
-			x = bi.getWidth(); 			
-		}catch(Exception e){}
-		
-		return x; 
-	}
-
-	public int ImageHeightValue(String file){ 
-		int y = 0;		
-		try{
-			BufferedImage bi = ImageIO.read(new File(file));
-			y = bi.getHeight();
-		}catch(Exception e){}	
-		
-		return y;
-	}
-
 }
 
 
 class Missile{ 
 
-	//missile position variable
-	int x,y;
+	Point pos; //missile position variable
  
 	Missile(int x, int y){ //get missile position
-		this.x = x;
-		this.y = y;
+		pos = new Point(x, y); 
 	}
 
 	public void move(){ //move missile
-		x += 20; 
+		pos.x += 20; 
 	}
 }
 
