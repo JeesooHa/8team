@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+
 import java.awt.image.*;
 
 public class game {	
@@ -109,7 +110,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		missile_Speed = 11; 
 		fire_Speed = 10; 
 		enemy_Speed = 3;
-		
+
 	}
 		
 	public void start(){	
@@ -134,6 +135,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	}	
 	
 	public void MissileProcess(){ 
+
 		if ( KeySpace == true ){ //shooting
 			player_Status = 1;
 			
@@ -175,7 +177,6 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 				}
 			}			
 		}
-		
 	}
 	
 	
@@ -245,8 +246,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		}
 		return check; 
 	}
-	
-	
+
 	public void paint(Graphics g){		
 		buffImage = createImage(f_width, f_height); //set double buffer size
 		buffg = buffImage.getGraphics();
@@ -391,7 +391,6 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			player_Status = 0;
 		}
 	}
-	
 }
 
 
@@ -413,6 +412,7 @@ class Missile{
 			x += speed; 
 		else
 			x -= speed;
+
 	}
 }
 
