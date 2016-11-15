@@ -1,9 +1,14 @@
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 
 import java.awt.image.*;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
 
 public class game {	
 	public static void main(String[] ar){		
@@ -111,6 +116,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		fire_Speed = 10; 
 		enemy_Speed = 3;
 
+		Sound("sound/BGM01.wav",true);
 	}
 		
 	public void start(){	
@@ -161,6 +167,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 				ex = new Explosion(x + plane_img.getWidth(null) / 2, y + plane_img.getHeight(null) / 2, 1);
 				Explosion_List.add(ex);
 				Missile_List.remove(i);
+				Sound("sound/explosion_sound.wav",false);
 			}
 				
 			for (int j = 0 ; j < Enemy_List.size(); ++ j){
@@ -174,6 +181,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 					//explision effect
 					ex = new Explosion(en.x + enemy_img.getWidth(null) / 2, en.y + enemy_img.getHeight(null) / 2 , 0);				
 					Explosion_List.add(ex); 
+					Sound("sound/explosion_sound.wav",false);
 				}
 			}			
 		}
@@ -208,6 +216,8 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 
 				ex = new Explosion(x+plane_img.getWidth(null) / 2, y+plane_img.getHeight(null)/ 2, 1 );
 				Explosion_List.add(ex);
+				
+				Sound("sound/explosion_sound.wav",false);
 			}
 		}
 		
@@ -391,6 +401,26 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			player_Status = 0;
 		}
 	}
+	
+	
+	public void Sound(String file, boolean Loop){
+
+		Clip clip;
+
+		try {
+
+			AudioInputStream ais = AudioSystem.getAudioInputStream(new BufferedInputStream(new FileInputStream(file)));
+			clip = AudioSystem.getClip();
+			clip.open(ais);
+			clip.start();
+
+			if (Loop) clip.loop(-1);	//loop : true - endless
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 }
 
 
@@ -446,4 +476,3 @@ class Explosion{
 		ex_cnt ++;
 	}		
 }
-	
