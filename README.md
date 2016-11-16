@@ -64,7 +64,7 @@ Download the 8team Diretory and start with start.jar
 ##Execute Image
 
 
-<img src ="https://github.com/JeesooHa/8team/blob/master/execute%20image.JPG" height = "200">
+<img src ="https://github.com/JeesooHa/8team/blob/master/execute%20image.JPG" height = "400">
 
 
 
