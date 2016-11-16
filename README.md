@@ -1,6 +1,9 @@
 #Get start the Project for OSS
 ###8team - Shooting Game
 
+##Project Name
+
+Air Force 2017
 
 
 ##언어
@@ -21,7 +24,18 @@ Windows
 
 
 
-## How to Start 
+
+
+
+# How to Start 
+
+##Download
+
+clone [this project](https://github.com/JeesooHa/8team.git) to your computer.
+
+
+
+##Run
 
 ###Windows
 
@@ -32,6 +46,15 @@ But, Cos This files have sound effect and many images never move the files to an
 ###Mac
 
 Download the 8team Diretory and start with start.jar
+
+
+
+##Key
+
+* Move - 방향키
+
+* Shoot - Space bar
+
 
 
 
