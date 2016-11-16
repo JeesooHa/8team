@@ -30,8 +30,11 @@ MIT
 
 ##개발환경
 
-Windows
+* Windows
 
+* Eclipse
+
+* jre 1.8.0_74
 
 # How to Start 
 
