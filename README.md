@@ -1,41 +1,34 @@
 #Get start the Project for OSS
 ###8team - Shooting Game
 
-##게임 실행 방법
+## How to Start 
 
-8team 폴더을 다운은 후 start.exe 실행
+Download the 8team Diretory and start with start.exe
 
-
-단, 이미지와 효과음 경로가 설정되어 있기 때문에
-
-exe 파일을 다른 곳으로 옮기지 말것.
-   
+But, Cos This files have sound effect and many images never move the files to anywhere.
 
 
-
-
-#코드
+# Code
 ###Frame_make.java
 
-* JAVA GUI 프로그램을 하기 위한 기초학습
-
-
-
+* Basical project for studying JAVA GUI Program
 
 
 
 
 ###game.java
 
-* 키보드를 사용한 이벤트 발생
+* Event from using keyboard
+ 
+* Use Plane_img.png 
 
-* plane_img.png 사용
+* Use missile_img.png
 
-* missile_img.png 사용
+* Shooting missile use spacebar 
 
-* spacebar를 누를 경우 미사일 발사
+* Adding enemies image - Enemy disappeared by own missiles
 
-* 적 이미지 추가 - 격추 이벤트 구현 완료
+* Adding enemies missile
 
 * 적 미사일 발사 추가
 
