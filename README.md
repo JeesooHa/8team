@@ -92,6 +92,8 @@ Download the 8team Diretory and start with start.jar
 
 * image
 
+<img src ="https://github.com/JeesooHa/8team.git/execute_image.jpg" height = "200">
+
 
 
 
