@@ -1,4 +1,4 @@
-#오픈소스 프로젝트 시작
+#Get start the Project for OSS
 ###8team - Shooting Game
 
 ##게임 실행 방법
