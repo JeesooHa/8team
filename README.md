@@ -16,19 +16,19 @@ Every playing time get new 3 HP points and The game will finished if all that po
 You can use this source wherever you want. Just give us a comment please.
  
 
-##언어
+##Language
 
 JAVA
 
 
 
-##라이센스
+##License
 
 MIT
 
 
 
-##개발환경
+##Environment
 
 * Windows
 
@@ -100,21 +100,21 @@ Download the 8team Diretory and start with start.jar
 
 
 
-##추후 구현해야할 것들
+##What to do later
 
-1. 적 랜덤 생성
+1. Apeear randomly of enemies.
 
-2. 게임끝 조건 - 체력 0이되면 종료
+2. How to end the game - All the HP points burned out
 
-3. 보스 몬스터 - 사진 1개 
+3. Adding Boss monster - one more image  
 
-4. stage 2 - 배경 : 가로로 긴 이미지 
+4. stage 2 - Blackground : Image which has long length of width 
 
-5. 필살기 -> 적 총알 없어지기, 점수 단위로 채워지기
+5. Ultimate skill -> Remove all bullets of enemies 
 
-6. 캐릭터 선택 - 2개
+6. Adding two more characters which user can select 
 
-7. 스타워즈처럼 - 스토리 소개
+7. Storytelling like starwars.
 
 
 
