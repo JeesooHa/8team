@@ -36,6 +36,8 @@ MIT
 
 * jre 1.8.0_74
 
+
+
 # How to Start 
 
 ##Download
@@ -66,21 +68,13 @@ Download the 8team Diretory and start with start.jar
 
 ##Execute Image
 
-
 <img src ="https://github.com/JeesooHa/8team/blob/master/execute%20image.JPG" height = "400">
 
 
-
-
-
-
-
-# Code
+## Code
 ###Frame_make.java
 
 * Basical project for studying JAVA GUI Program
-
-
 
 
 ###game.java
@@ -106,9 +100,27 @@ Download the 8team Diretory and start with start.jar
 
 
 
+##추후 구현해야할 것들
+
+1. 적 랜덤 생성
+
+2. 게임끝 조건 - 체력 0이되면 종료
+
+3. 보스 몬스터 - 사진 1개 
+
+4. stage 2 - 배경 : 가로로 긴 이미지 
+
+5. 필살기 -> 적 총알 없어지기, 점수 단위로 채워지기
+
+6. 캐릭터 선택 - 2개
+
+7. 스타워즈처럼 - 스토리 소개
 
 
-#팀원 && Role
+
+
+
+##팀원 && Role
 
 * [김대한](http://KimDaehan.github.io) 신문방송학과09 
 
@@ -142,5 +154,5 @@ Download the 8team Diretory and start with start.jar
 
 
 
-#Reference
+##Reference
 >[link_to_source_code_reference](http://blog.naver.com/dosem321/40170781167#)
