@@ -30,9 +30,7 @@ But, Cos This files have sound effect and many images never move the files to an
 
 * Adding enemies missile
 
-* 적 미사일 발사 추가
-
-* 배경음 및 효과음 추가
+* Adding Background music and sound effect
 
 
 
@@ -47,5 +45,6 @@ But, Cos This files have sound effect and many images never move the files to an
 
 
 
-#참고 사이트
+
+#Reference
 >[link_to_source_code_reference](http://blog.naver.com/dosem321/40170781167#)
