@@ -61,6 +61,15 @@ Download the 8team Diretory and start with start.jar
 
 * Shoot - Space bar
 
+##Execute Image
+
+
+<img src ="https://github.com/JeesooHa/8team/blob/master/execute%20image.JPG" height = "200">
+
+
+
+
+
 
 
 # Code
@@ -91,9 +100,6 @@ Download the 8team Diretory and start with start.jar
 ### Detail of Game
 
 * image
-
-<img src ="https://github.com/JeesooHa/8team.git/execute_image.jpg" height = "200">
-
 
 
 
