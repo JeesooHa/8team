@@ -61,27 +61,27 @@ Download the 8team Diretory and start with start.jar
 
 #팀원 && Role
 
-*[김대한](http://KimDaehan.github.io) 신문방송학과09 
+* [김대한](http://KimDaehan.github.io) 신문방송학과09 
 
  Role : 발표 및 깃허브 관리
 
 
-*[임주희](http://jssngg.github.io) 컴퓨터공학과16 
+* [임주희](http://jssngg.github.io) 컴퓨터공학과16 
 
  Role : PT제작 및 깃허브 관리
 
 
-*[조우진](https://woojin-jo.github.io/) 경제학부12
+* [조우진](https://woojin-jo.github.io/) 경제학부12
 
  Role :  PT제작 및 깃허브 관리
 
 
-*[하지수](https://jeesooha.github.io/) 로봇공학과13 
+* [하지수](https://jeesooha.github.io/) 로봇공학과13 
 
  Role : 코드 제작 및 깃허브 관리
 
 
-*[황순근](http://zoowx321.github.io/) 로봇공학과13
+* [황순근](http://zoowx321.github.io/) 로봇공학과13
 
  Role : 코드 제작 및 깃허브 관리
 
