@@ -1,11 +1,23 @@
 #Get start the Project for OSS
 ###8team - Shooting Game
 
+
+
+
+
+
+
 ## How to Start 
+
+###Windows
 
 Download the 8team Diretory and start with start.exe
 
 But, Cos This files have sound effect and many images never move the files to anywhere.
+
+###Mac
+
+Download the 8team Diretory and start with start.jar
 
 
 # Code
