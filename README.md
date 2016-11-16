@@ -80,6 +80,8 @@ Download the 8team Diretory and start with start.jar
 
 * Adding Background music and sound effect
 
+![shooting game](https://cloud.githubusercontent.com/assets/22338990/20337542/11756380-ac15-11e6-9669-9bcfadf6ab26.PNG)
+
 
 
 #팀원 && Role
