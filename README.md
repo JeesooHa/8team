@@ -48,15 +48,24 @@ clone [this project](https://github.com/JeesooHa/8team.git) to your computer.
 
 ##Run
 
+jre is too big. so I delete it.
+
+
+Please, download java before start game.
+
+
+And don't move .jar file to another folder or directory.
+
+
 ###Windows
 
-Download the 8team Diretory and start with start.exe
+click the start.jar file.
 
-But, Cos This files have sound effect and many images never move the files to anywhere.
 
-###Mac
+###Linux
 
-Download the 8team Diretory and start with start.jar
+~ (8team directory path)$ java -jar start.jar 
+
 
 
 
