@@ -71,7 +71,7 @@ click the start.jar file.
 
 ##Key
 
-* Move - 방향키
+* Move - Arrow keys
 
 * Shoot - Space bar
 
