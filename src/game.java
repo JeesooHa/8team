@@ -57,7 +57,9 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	Image background_img; 
 	Image explo_img; 
 	Image missile_img;
-	Image enemy_img;
+	Image enemy_img1;
+	Image enemy_img2;
+	Image enemy_img3;
 	Image enemy_missile_img;
 	
 	//to save shot missile
@@ -102,7 +104,9 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		//load images
 		plane_img = new ImageIcon("images/plane_img.png").getImage(); 
 		missile_img = new ImageIcon("images/missile_img.png").getImage();
-		enemy_img = new ImageIcon("images/enemy2.png").getImage();	
+		enemy_img1 = new ImageIcon("images/enemy1.png").getImage();
+		enemy_img2 = new ImageIcon("images/enemy2.png").getImage();	
+		enemy_img3 = new ImageIcon("images/enemy3.png").getImage();	
 		background_img = new ImageIcon("images/background1.jpg").getImage();
 		explo_img = new ImageIcon("images/enemy_explosion.png").getImage();
 		enemy_missile_img = new ImageIcon("images/enemy_shot.png").getImage();
@@ -172,14 +176,19 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 				
 			for (int j = 0 ; j < Enemy_List.size(); ++ j){
 				en = (Enemy) Enemy_List.get(j);
-				if (Crash(ms.x, ms.y, en.x, en.y, missile_img, enemy_img)&&ms.who==0){
+				
+				Image tmp = enemy_img1;				
+				if(en.type == 2)	tmp = enemy_img2;
+				else if(en.type == 3)	tmp = enemy_img3;
+				
+				if (Crash(ms.x, ms.y, en.x, en.y, missile_img, tmp) && ms.who==0){
 					Missile_List.remove(i);
 					Enemy_List.remove(j);
 					
 					game_Score += 10; //get score
 					
 					//explision effect
-					ex = new Explosion(en.x + enemy_img.getWidth(null) / 2, en.y + enemy_img.getHeight(null) / 2 , 0);				
+					ex = new Explosion(en.x + tmp.getWidth(null) / 2, en.y + tmp.getHeight(null) / 2 , 0);				
 					Explosion_List.add(ex); 
 					Sound("sound/explosion_sound.wav",false);
 				}
@@ -196,7 +205,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			en.move(); //move enemy
 			if(en.x < -200){
 				Enemy_List.remove(i); 
-			}
+			}		
 			
 			//enemy shoot
 			if ( cnt % 50 == 0){
@@ -204,14 +213,18 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 				Missile_List.add(ms);			
 			}
 			
+			Image tmp = enemy_img1;				
+			if(en.type == 2)	tmp = enemy_img2;
+			else if(en.type == 3)	tmp = enemy_img3;
+			
 			//crashed with enemy
-			if(Crash(x, y, en.x, en.y, plane_img, enemy_img)){
+			if(Crash(x, y, en.x, en.y, plane_img, tmp)){
 
 				player_Hitpoint --; 
 				Enemy_List.remove(i); 
 				game_Score += 10; 
 
-				ex = new Explosion(en.x + enemy_img.getWidth(null) / 2, en.y + enemy_img.getHeight(null) / 2, 0 );
+				ex = new Explosion(en.x + tmp.getWidth(null) / 2, en.y + tmp.getHeight(null) / 2, 0 );
 				Explosion_List.add(ex); 
 
 				ex = new Explosion(x+plane_img.getWidth(null) / 2, y+plane_img.getHeight(null)/ 2, 1 );
@@ -221,15 +234,18 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			}
 		}
 		
-		if ( cnt % 200 == 0 ){ //make enemy
-			en = new Enemy(f_width + 100, 100, enemy_Speed);
-			Enemy_List.add(en); 
+		Random random = new Random();
 		
-			en = new Enemy(f_width + 100, 300, enemy_Speed);
-			Enemy_List.add(en);
-
-			en = new Enemy(f_width + 100, 500, enemy_Speed);
-			Enemy_List.add(en);
+		if ( cnt % 100 == 0 ){ //make enemy
+			en = new Enemy(f_width + random.nextInt(20)*10 + 20, random.nextInt(550) + 25, enemy_Speed,random.nextInt(3) + 1);
+			Enemy_List.add(en); 	
+			
+		}
+		
+		if ( cnt % 170 == 0 ){ //make enemy
+			en = new Enemy(f_width + random.nextInt(7)*10 + 20, random.nextInt(550) + 25, enemy_Speed,random.nextInt(3) + 1);
+			Enemy_List.add(en); 	
+			
 		}
 
 	}
@@ -306,7 +322,12 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	public void Draw_Enemy(){ 
 		for (int i = 0 ; i < Enemy_List.size() ; ++i ){
 			en = (Enemy)(Enemy_List.get(i));
-			buffg.drawImage(enemy_img, en.x, en.y, this);	
+			
+			Image tmp = enemy_img1;				
+			if(en.type == 2)	tmp = enemy_img2;
+			else if(en.type == 3)	tmp = enemy_img3;
+			
+			buffg.drawImage(tmp, en.x, en.y, this);	
 		}
 	}
 	
@@ -448,11 +469,13 @@ class Missile{
 
 class Enemy{ 
 	int x,y,speed;
+	int type;
 	
-	Enemy(int x, int y, int speed){
+	Enemy(int x, int y, int speed,int type){
 		this.x = x;
 		this.y = y;
 		this.speed = speed;
+		this.type = type;
 	}
 	
 	public void move(){
