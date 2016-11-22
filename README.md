@@ -129,31 +129,27 @@ click the start.jar file.
 
 
 
-##팀원 && Role
+##Member && Role
 
-* [김대한](http://KimDaehan.github.io) 신문방송학과09 
+Manager:
 
- Role : 발표 및 깃허브 관리
+[Jeesoo Ha](https://jeesooha.github.io/) (Department of Robotics 13)
 
+Translater:
 
-* [임주희](http://jssngg.github.io) 컴퓨터공학과16 
+[Daehan Kim](http://KimDaehan.github.io) (Department of Newspaper Broadcasting 09)
 
- Role : PT제작 및 깃허브 관리
+Designer :
 
+[Woojin Jo](https://woojin-jo.github.io/) (Department of Economics 12)
 
-* [조우진](https://woojin-jo.github.io/) 경제학부12
+Developer:
 
- Role :  PT제작 및 깃허브 관리
+[Soonguen Hwang](http://zoowx321.github.io/) (Department of Robotics 13)
 
+Documentator : 
 
-* [하지수](https://jeesooha.github.io/) 로봇공학과13 
-
- Role : 코드 제작 및 깃허브 관리
-
-
-* [황순근](http://zoowx321.github.io/) 로봇공학과13
-
- Role : 코드 제작 및 깃허브 관리
+[Joohee Lim](http://jssngg.github.io) (Computer Science 16)
 
 
 
