@@ -17,7 +17,9 @@ public class game {
 }
 
 class game_Frame extends JFrame implements KeyListener, Runnable{ 
-
+	
+	private static boolean all_stop = false;
+	
 	int f_width;
 	int f_height;
  
@@ -116,11 +118,11 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		player_Hitpoint = 3;	
 		  
 		player_Speed = 5; 
-		missile_Speed = 11; 
+		missile_Speed = 7; 
 		fire_Speed = 10; 
 		enemy_Speed = 3;
 
-		Sound("sound/BGM01.wav",true);
+		Sound("sound/BGM01.wav",false);
 	}
 		
 	public void start(){	
@@ -132,7 +134,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 
 	public void run(){ 
 		try{ 		
-			while(true){ 
+			while(!all_stop){ 
 				KeyProcess(); //get the keyboard value to update position
 				EnemyProcess();
 				MissileProcess();
@@ -168,6 +170,8 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			//enemy missile shot
 			if (Crash(x, y, ms.x, ms.y, plane_img, missile_img) && ms.who == 1 ) {
 				player_Hitpoint --;
+				GameOver(player_Hitpoint);
+				
 				ex = new Explosion(x + plane_img.getWidth(null) / 2, y + plane_img.getHeight(null) / 2, 1);
 				Explosion_List.add(ex);
 				Missile_List.remove(i);
@@ -208,7 +212,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			}		
 			
 			//enemy shoot
-			if ( cnt % 50 == 0){
+			if ( cnt % 100 == 0){
 				ms = new Missile (en.x, en.y + 10, missile_Speed, 1);
 				Missile_List.add(ms);			
 			}
@@ -221,6 +225,8 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			if(Crash(x, y, en.x, en.y, plane_img, tmp)){
 
 				player_Hitpoint --; 
+				GameOver(player_Hitpoint);
+				
 				Enemy_List.remove(i); 
 				game_Score += 10; 
 
@@ -439,6 +445,13 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public void GameOver(int fd){
+		if(fd == 0){
+			all_stop = true;
+			Sound("sound/Game_Over_sound_effect.wav",false);
 		}
 	}
 	
