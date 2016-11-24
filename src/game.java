@@ -63,6 +63,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	Image enemy_img2;
 	Image enemy_img3;
 	Image enemy_missile_img;
+	Image gameover_img;
 	
 	//to save shot missile
 	ArrayList Missile_List = new ArrayList();
@@ -112,6 +113,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		background_img = new ImageIcon("images/background1.jpg").getImage();
 		explo_img = new ImageIcon("images/enemy_explosion.png").getImage();
 		enemy_missile_img = new ImageIcon("images/enemy_shot.png").getImage();
+		gameover_img = new ImageIcon("images/game over.png").getImage();
 		
 		//setting
 		game_Score = 0;	//initialize game score
@@ -282,7 +284,12 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	public void paint(Graphics g){		
 		buffImage = createImage(f_width, f_height); //set double buffer size
 		buffg = buffImage.getGraphics();
-		update(g);
+		
+		if(all_stop == true)
+			GameOverDraw(g);
+		else
+			update(g);
+		
 	}
 	
 	public void update(Graphics g){
@@ -292,6 +299,14 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		Draw_Missile(); 
 		Draw_Explosion();
 		Draw_StatusText();
+		g.drawImage(buffImage, 0, 0, this); //draw image from buffer
+	}
+	
+	public void GameOverDraw(Graphics g){
+		
+		buffg.clearRect(0, 0, f_width, f_height);
+		buffg.drawImage(gameover_img, 0, 0, this);
+
 		g.drawImage(buffImage, 0, 0, this); //draw image from buffer
 	}
 		
@@ -449,8 +464,9 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	}
 	
 	public void GameOver(int fd){
-		if(fd == 0){
+		if(fd <= 0){
 			all_stop = true;
+
 			Sound("sound/Game_Over_sound_effect.wav",false);
 		}
 	}
