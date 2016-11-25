@@ -75,6 +75,10 @@ click the start.jar file.
 
 * Shoot - Space bar
 
+* Ultimate Skill - q (every enemy and missile disappeared)
+
+
+
 ##Execute Image
 
 <img src ="https://github.com/JeesooHa/8team/blob/master/execute%20image.JPG" height = "400">
