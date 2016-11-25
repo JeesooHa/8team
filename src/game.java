@@ -30,6 +30,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	boolean KeyLeft = false;
 	boolean KeyRight = false;
 	boolean KeySpace = false; //missile
+	boolean KeyQ = false; //ultimate skill
 	
 	int cnt;	//enemy made loop
 	
@@ -189,7 +190,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 				if (Crash(ms.x, ms.y, en.x, en.y, missile_img, tmp) && ms.who==0){
 					Missile_List.remove(i);
 					
-					if(en.type != 4 || boss_Hitpoint <= 0){
+					if(en.type != 4 || boss_Hitpoint < 1){
 						Enemy_List.remove(j);
 						if(en.type == 4 && boss_Status == 1)	boss_Status = 2;
 					}
@@ -429,7 +430,10 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 				break;
 			case KeyEvent.VK_SPACE : //missile
 				KeySpace = true;
-				break;				
+				break;	
+			case KeyEvent.VK_Q : //ultimate skill
+				KeyQ = true;
+				break;
 		}
 	}
 	
@@ -450,6 +454,9 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 				break;
 			case KeyEvent.VK_SPACE : //missile
 				KeySpace = false;
+				break;
+			case KeyEvent.VK_Q : //ultimate
+				KeyQ = false;
 				break;
 		}
 	}
@@ -477,6 +484,11 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			if ( x + plane_img.getWidth(null) < f_width ) x += 5;
 			player_Status = 0;
 		}
+		
+		if(KeyQ == true){
+			Enemy_List.clear();
+			Missile_List.clear();
+		}
 	}
 	
 	
@@ -502,7 +514,6 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	public void GameOver(int fd){
 		if(fd <= 0){
 			all_stop = true;
-
 			Sound("sound/Game_Over_sound_effect.wav",false);
 		}
 	}
@@ -513,7 +524,6 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 
 
 class Missile{ 
-
 	//missile position variable
 	int x,y,speed;
 	int who;	// 0: plane, 1: enemy
@@ -549,13 +559,12 @@ class Enemy{
 		if(this.type != 4)
 			x -= speed;
 		else
-			if(x>800)	x -= speed;
+			if(x>900)	x -= speed;
 	}
 }
 
 
 class Explosion{ 
-
 	int x,y;
 	int ex_cnt;
 	int damage; 
