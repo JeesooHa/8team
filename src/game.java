@@ -20,6 +20,8 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	private static boolean all_stop = false;
 	private static boolean stage_clear = false;
 	
+	private static int Q_available = 0;
+	
 	int f_width, f_height;	//frame size
 	int x, y;	//position of plane
 	int bx = 0;	//background move
@@ -190,14 +192,17 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 				if (Crash(ms.x, ms.y, en.x, en.y, missile_img, tmp) && ms.who==0){
 					Missile_List.remove(i);
 					
+					if(en.type == 4)
+						boss_Hitpoint -= 1;
+					
 					if(en.type != 4 || boss_Hitpoint < 1){
 						Enemy_List.remove(j);
 						if(en.type == 4 && boss_Status == 1)	boss_Status = 2;
 					}
-					
-					boss_Hitpoint -= 1;
-					
+								
 					game_Score += 10; //get score
+					
+					if(game_Score % 150 == 0)	Q_available += 1;
 					
 					//explision effect
 					ex = new Explosion(en.x + tmp.getWidth(null) / 2, en.y + tmp.getHeight(null) / 2 , 0);				
@@ -234,11 +239,9 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			if(Crash(x, y, en.x, en.y, plane_img, tmp)){
 
 				player_Hitpoint --; 
-				GameOver(player_Hitpoint);
-				
+				GameOver(player_Hitpoint);				
 				Enemy_List.remove(i); 
-				game_Score += 10; 
-
+								
 				ex = new Explosion(en.x + tmp.getWidth(null) / 2, en.y + tmp.getHeight(null) / 2, 0 );
 				Explosion_List.add(ex); 
 
@@ -252,7 +255,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		Random random = new Random();
 		
 		//stage 1 boss appeared
-		if(game_Score > 10 && boss_Status == 0){
+		if(game_Score > 200 && boss_Status == 0){
 			en = new Enemy(f_width , f_height/3 , enemy_Speed, 4);
 			Enemy_List.add(en);
 			boss_Status = 1;
@@ -402,8 +405,9 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		buffg.setFont(new Font("Defualt", Font.BOLD, 20));
 		buffg.drawString("SCORE : " + game_Score, 1000, 70);
 		buffg.drawString("HitPoint : " + player_Hitpoint, 1000, 90);
+		buffg.drawString("Ultimate Skill : " + Q_available, 1000, 110);
 		if(boss_Status == 1)
-			buffg.drawString("Boss HP : " + boss_Hitpoint , 1000, 110);
+			buffg.drawString("Boss HP : " + boss_Hitpoint , 1000, 130);
 		
 		//buffg.drawString("Missile Count : " + Missile_List.size(), 1000, 110);
 		//buffg.drawString("Enemy Count : " + Enemy_List.size(), 1000, 130);
@@ -485,9 +489,17 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			player_Status = 0;
 		}
 		
-		if(KeyQ == true){
-			Enemy_List.clear();
+		if(KeyQ == true && Q_available > 0){
+			Sound("sound/ultimate_skill.wav",false);
+			for(int i = 0; i < Enemy_List.size(); i++){
+				Enemy en = ((Enemy) Enemy_List.get(i));
+				if(en.type != 4)
+					Enemy_List.remove(i);
+			}
+			
 			Missile_List.clear();
+			Q_available -= 1;
+			KeyQ = false;
 		}
 	}
 	
