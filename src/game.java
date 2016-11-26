@@ -472,7 +472,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 				KeyQ = true;
 				break;
 			case KeyEvent.VK_T : //Test key, add 100 score
-				KeyQ = true;
+				KeyT = true;
 				break;
 		}
 	}
@@ -540,8 +540,10 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			Q_available -= 1;
 			KeyQ = false;
 		}
-		if(KeyT == true) {
-			Score
+		if(KeyT == true) 
+		{
+			game_Score += 100;
+			KeyT = false;
 		}
 	}
 	
