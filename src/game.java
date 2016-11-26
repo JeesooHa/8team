@@ -50,7 +50,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	
 	int boss_Hitpoint;
 	int boss_Status = 0;	//0: not appeared, 1: appeared, 2: destroyed
-	
+	int boss_appeared_cond = 1; //whenever getting game score 200, boss apeared
 	Thread th; 
 	
 	Toolkit tk = Toolkit.getDefaultToolkit();
@@ -140,12 +140,15 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	public void run(){ 
 		try{ 		
 			while(!all_stop){ 
+				
 				KeyProcess();	//get the keyboard value to update position
 				EnemyProcess();
 				MissileProcess();
 				ExplosionProcess();
 				repaint(); 		//repaint plane using new position
+				GotoNextStage();
 				StageClearProcess();
+				
 				Thread.sleep(20);	//delay time
 				cnt++;
 			}			
@@ -259,7 +262,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		Random random = new Random();
 		
 		//stage 1 boss appeared
-		if(game_Score > 200 && boss_Status == 0){
+		if(game_Score%200 > boss_appeared_cond && boss_Status == 0){
 			en = new Enemy(f_width , f_height/3 , enemy_Speed, 4);
 			Enemy_List.add(en);
 			boss_Status = 1;
@@ -294,7 +297,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			Missile_List.clear();
 			//Draw_StageClear();
 			//buffg = buffImg(stage_clear)
-			GotoNextStage();
+			
 		}
 		
 	}
@@ -306,13 +309,13 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			 try
 			 {
 				 stage_clear = false;
-				 //Thread.sleep(5000);//10 second wait to prepare
+				 Thread.sleep(5000);//10 second wait to prepare
 				 
 				 /////////difficulty up setting////////////////
 				 enemy_Speed += 2;
 				 enemy_missile_Speed += 4;
 				 boss_Status = 0;
-				 
+				 boss_appeared_cond += 1;
 				 //buffg = buffImage.getGraphics();
 			 }
 			 catch (Exception e){}
