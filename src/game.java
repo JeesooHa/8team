@@ -318,7 +318,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 				 try
 				 {
 					 stage_clear = false;
-					 Thread.sleep(5000);//10 second wait to prepare
+					 Thread.sleep(2000);//10 second wait to prepare
 					 
 					 /////////difficulty up setting////////////////
 					 enemy_Speed += 2;
