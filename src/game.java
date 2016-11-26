@@ -140,10 +140,6 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 
 	public void run(){ 
 		try{
-			if(cnt == 0)
-			{
-				repaint();
-			}
 			while(!all_stop){ 
 				
 				KeyProcess();	//get the keyboard value to update position
@@ -309,27 +305,38 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	}
 	 public void GotoNextStage()//if boss clear, few second wait and goto next stage. next stage's difficulty will increase.
 	{
-		// if((cnt - save_cnt)/500 > 0)
-		 //{
-
+		 
 			 if(stage_clear == true)
 			 {
-				 
-				 try
+				 for (int i = 0; i< 150; i++)
 				 {
-					 stage_clear = false;
-					 Thread.sleep(2000);//10 second wait to prepare
-					 
-					 /////////difficulty up setting////////////////
-					 enemy_Speed += 2;
-					 enemy_missile_Speed += 4;
-					 boss_Status = 0;
-					 boss_appeared_cond += 1;
-					 //buffg = buffImage.getGraphics();
+					 KeyProcess();
+					 repaint();
+					 try
+					 {
+						 Thread.sleep(20);	//delay time
+					 }
+					 catch (Exception e){}
+						
 				 }
-				 catch (Exception e){}
+				//else
+				 //{
+					 try
+					 {
+						 stage_clear = false;
+						 //Thread.sleep(2000);//10 second wait to prepare
+						 
+						 /////////difficulty up setting////////////////
+						 enemy_Speed += 2;
+						 enemy_missile_Speed += 4;
+						 boss_Status = 0;
+						 boss_appeared_cond += 1;
+						 //buffg = buffImage.getGraphics();
+					 }
+					 catch (Exception e){}
+				 //}
 			 }
-		 //}
+		 
 	}
 		
 	 
@@ -464,7 +471,8 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		if(boss_Status == 1)
 			buffg.drawString("Boss HP : " + boss_Hitpoint , 1000, 130);
 		//buffg.drawString("save_cnt : " + save_cnt, 1000, 150);
-		buffg.drawString("save_cnt : " + (cnt - save_cnt), 1000, 150);
+		buffg.drawString("cnt : " + (cnt - save_cnt), 1000, 150);
+		buffg.drawString("cnt-save_cnt : " + (cnt - save_cnt), 1000, 170);
 		//buffg.drawString("Missile Count : " + Missile_List.size(), 1000, 110);
 		//buffg.drawString("Enemy Count : " + Enemy_List.size(), 1000, 130);
 	}
