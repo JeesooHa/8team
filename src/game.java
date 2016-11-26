@@ -33,6 +33,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	boolean KeyRight = false;
 	boolean KeySpace = false; //missile
 	boolean KeyQ = false; //ultimate skill
+	boolean KeyT = false; //test key. score add
 	
 	int cnt;	//enemy made loop
 	
@@ -369,11 +370,9 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	}
 	public void Draw_StageClear()
 	{
-		
-		buffg.clearRect(0, 0, f_width/2, f_height/2);
+				
 		buffg.drawImage(stage_clear_img, f_width/2 - 295, f_height/2, this);
 
-		//g.drawImage(buffImage, 0, 0, this); //draw image from buffer
 	}
 	public void Draw_Background(){
 		buffg.clearRect(0, 0, f_width, f_height);
@@ -472,6 +471,9 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			case KeyEvent.VK_Q : //ultimate skill
 				KeyQ = true;
 				break;
+			case KeyEvent.VK_T : //Test key, add 100 score
+				KeyQ = true;
+				break;
 		}
 	}
 	
@@ -495,6 +497,9 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 				break;
 			case KeyEvent.VK_Q : //ultimate
 				KeyQ = false;
+				break;
+			case KeyEvent.VK_T : //test key
+				KeyT = false;
 				break;
 		}
 	}
@@ -534,6 +539,9 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			Missile_List.clear();
 			Q_available -= 1;
 			KeyQ = false;
+		}
+		if(KeyT == true) {
+			Score
 		}
 	}
 	
