@@ -65,6 +65,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	Image enemy_missile_img;
 	Image gameover_img;
 	Image boss1;
+	Image stage_clear_img;
 	
 	//to save shot missile
 	ArrayList Missile_List = new ArrayList();
@@ -113,7 +114,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		enemy_missile_img = new ImageIcon("images/enemy_shot.png").getImage();
 		gameover_img = new ImageIcon("images/game over.png").getImage();
 		boss1 = new ImageIcon("images/boss2.png").getImage();
-		
+		stage_clear_img = new ImageIcon("images/stage_clear.png").getImage();
 		//setting
 		game_Score = 0;	//initialize game score
 		player_Hitpoint = 3;	
@@ -290,7 +291,8 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			stage_clear = true;
 			Enemy_List.clear();
 			Missile_List.clear();
-
+			//Draw_StageClear();
+			//buffg = buffImg(stage_clear)
 		}
 		
 	}
@@ -301,11 +303,14 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			 try
 			 {
 				 stage_clear = false;
-				 Thread.sleep(10000);//10 second wait to prepare
+				 Thread.sleep(5000);//10 second wait to prepare
 				 
 				 /////////difficulty up setting////////////////
 				 enemy_Speed += 2;
 				 enemy_missile_Speed += 4;
+				 boss_Status = 0;
+				 
+				 //buffg = buffImage.getGraphics();
 			 }
 			 catch (Exception e){}
 		 }
@@ -337,6 +342,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		
 		if(all_stop == true)
 			Draw_GameOver(g);
+
 		else
 			update(g);
 		
@@ -349,6 +355,8 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		Draw_Missile(); 
 		Draw_Explosion();
 		Draw_StatusText();
+		if(stage_clear == true)
+			Draw_StageClear();
 		g.drawImage(buffImage, 0, 0, this); //draw image from buffer
 	}
 	
@@ -359,7 +367,14 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 
 		g.drawImage(buffImage, 0, 0, this); //draw image from buffer
 	}
+	public void Draw_StageClear()
+	{
 		
+		buffg.clearRect(0, 0, f_width/2, f_height/2);
+		buffg.drawImage(stage_clear_img, f_width/2 - 295, f_height/2, this);
+
+		//g.drawImage(buffImage, 0, 0, this); //draw image from buffer
+	}
 	public void Draw_Background(){
 		buffg.clearRect(0, 0, f_width, f_height);
 		if ( bx > - 600){		
