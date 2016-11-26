@@ -147,6 +147,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 				ExplosionProcess();
 				repaint(); 		//repaint plane using new position
 				GotoNextStage();
+				
 				StageClearProcess();
 				
 				Thread.sleep(20);	//delay time
