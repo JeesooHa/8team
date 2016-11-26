@@ -308,7 +308,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		 
 			 if(stage_clear == true)
 			 {
-				 for (int i = 0; i< 150; i++)
+				 for (int i = 0; i< 150; i++)//approximately 3 second wait to prepare
 				 {
 					 KeyProcess();
 					 repaint();
@@ -316,25 +316,22 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 					 {
 						 Thread.sleep(20);	//delay time
 					 }
-					 catch (Exception e){}
-						
+					 catch (Exception e){}					
 				 }
-				//else
-				 //{
+
 					 try
 					 {
 						 stage_clear = false;
-						 //Thread.sleep(2000);//10 second wait to prepare
 						 
 						 /////////difficulty up setting////////////////
 						 enemy_Speed += 2;
 						 enemy_missile_Speed += 4;
 						 boss_Status = 0;
 						 boss_appeared_cond += 1;
-						 //buffg = buffImage.getGraphics();
+						 //////////////////////////////////////////////
 					 }
 					 catch (Exception e){}
-				 //}
+
 			 }
 		 
 	}
