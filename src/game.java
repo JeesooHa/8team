@@ -38,7 +38,8 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	
 	//speed setting
 	int player_Speed;
-	int missile_Speed; 
+	int missile_Speed;
+	int enemy_missile_Speed; 
 	int fire_Speed; 
 	int enemy_Speed; 
 	
@@ -119,7 +120,8 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		boss_Hitpoint = 10;
 		  
 		player_Speed = 5; 
-		missile_Speed = 7; 
+		missile_Speed = 7;
+		enemy_missile_Speed = 7;
 		fire_Speed = 10; 
 		enemy_Speed = 3;
 
@@ -226,7 +228,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			
 			//enemy shoot
 			if ( cnt % 100 == 0){
-				ms = new Missile (en.x, en.y + 10, missile_Speed, 1);
+				ms = new Missile (en.x, en.y + 10, enemy_missile_Speed, 1);
 				Missile_List.add(ms);			
 			}
 			
@@ -290,6 +292,23 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			Missile_List.clear();
 
 		}
+		
+	}
+	 public void GotoNextStage()//if boss clear, few second wait and goto next stage. next stage's difficulty will increase.
+	{
+		 if(stage_clear == true)
+		 {
+			 try
+			 {
+				 stage_clear = false;
+				 Thread.sleep(10000);//10 second wait to prepare
+				 
+				 /////////difficulty up setting////////////////
+				 enemy_Speed += 2;
+				 enemy_missile_Speed += 4;
+			 }
+			 catch (Exception e){}
+		 }
 	}
 		
 	 
