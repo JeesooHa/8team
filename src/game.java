@@ -294,6 +294,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			Missile_List.clear();
 			//Draw_StageClear();
 			//buffg = buffImg(stage_clear)
+			GotoNextStage();
 		}
 		
 	}
@@ -301,10 +302,11 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	{
 		 if(stage_clear == true)
 		 {
+			 
 			 try
 			 {
 				 stage_clear = false;
-				 Thread.sleep(5000);//10 second wait to prepare
+				 //Thread.sleep(5000);//10 second wait to prepare
 				 
 				 /////////difficulty up setting////////////////
 				 enemy_Speed += 2;
