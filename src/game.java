@@ -51,6 +51,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	int boss_Hitpoint;
 	int boss_Status = 0;	//0: not appeared, 1: appeared, 2: destroyed
 	int boss_appeared_cond = 1; //whenever getting game score 200, boss apeared
+	int save_cnt = 0;
 	Thread th; 
 	
 	Toolkit tk = Toolkit.getDefaultToolkit();
@@ -147,7 +148,6 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 				ExplosionProcess();
 				repaint(); 		//repaint plane using new position
 				GotoNextStage();
-				
 				StageClearProcess();
 				
 				Thread.sleep(20);	//delay time
@@ -263,7 +263,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		Random random = new Random();
 		
 		//stage 1 boss appeared
-		if(game_Score%200 > boss_appeared_cond && boss_Status == 0){
+		if(game_Score/200 > boss_appeared_cond && boss_Status == 0){
 			en = new Enemy(f_width , f_height/3 , enemy_Speed, 4);
 			Enemy_List.add(en);
 			boss_Status = 1;
@@ -296,6 +296,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			stage_clear = true;
 			Enemy_List.clear();
 			Missile_List.clear();
+			save_cnt = cnt;
 			//Draw_StageClear();
 			//buffg = buffImg(stage_clear)
 			
@@ -304,6 +305,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	}
 	 public void GotoNextStage()//if boss clear, few second wait and goto next stage. next stage's difficulty will increase.
 	{
+		 if((cnt - save_cnt)/500 > 1)
 		 if(stage_clear == true)
 		 {
 			 
