@@ -50,7 +50,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	
 	int boss_Hitpoint;
 	int boss_Status = 0;	//0: not appeared, 1: appeared, 2: destroyed
-	int boss_appeared_cond = 1; //whenever getting game score 200, boss apeared
+	int boss_appeared_cond = 0; //whenever getting game score 200, boss apeared
 	int save_cnt = 0;
 	Thread th; 
 	
@@ -139,7 +139,11 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	}
 
 	public void run(){ 
-		try{ 		
+		try{
+			if(cnt == 0)
+			{
+				repaint();
+			}
 			while(!all_stop){ 
 				
 				KeyProcess();	//get the keyboard value to update position
@@ -148,8 +152,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 				ExplosionProcess();
 				repaint(); 		//repaint plane using new position
 				GotoNextStage();
-				StageClearProcess();
-				
+				StageClearProcess();				
 				Thread.sleep(20);	//delay time
 				cnt++;
 			}			
@@ -263,7 +266,8 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		Random random = new Random();
 		
 		//stage 1 boss appeared
-		if(game_Score/200 > boss_appeared_cond && boss_Status == 0){
+		if(game_Score/200 > boss_appeared_cond && boss_Status == 0){//make boss
+			boss_Hitpoint = 10;
 			en = new Enemy(f_width , f_height/3 , enemy_Speed, 4);
 			Enemy_List.add(en);
 			boss_Status = 1;
@@ -305,24 +309,27 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	}
 	 public void GotoNextStage()//if boss clear, few second wait and goto next stage. next stage's difficulty will increase.
 	{
-		 if((cnt - save_cnt)/500 > 1)
-		 if(stage_clear == true)
-		 {
-			 
-			 try
+		// if((cnt - save_cnt)/500 > 0)
+		 //{
+
+			 if(stage_clear == true)
 			 {
-				 stage_clear = false;
-				 Thread.sleep(5000);//10 second wait to prepare
 				 
-				 /////////difficulty up setting////////////////
-				 enemy_Speed += 2;
-				 enemy_missile_Speed += 4;
-				 boss_Status = 0;
-				 boss_appeared_cond += 1;
-				 //buffg = buffImage.getGraphics();
+				 try
+				 {
+					 stage_clear = false;
+					 Thread.sleep(5000);//10 second wait to prepare
+					 
+					 /////////difficulty up setting////////////////
+					 enemy_Speed += 2;
+					 enemy_missile_Speed += 4;
+					 boss_Status = 0;
+					 boss_appeared_cond += 1;
+					 //buffg = buffImage.getGraphics();
+				 }
+				 catch (Exception e){}
 			 }
-			 catch (Exception e){}
-		 }
+		 //}
 	}
 		
 	 
@@ -380,6 +387,13 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	{
 				
 		buffg.drawImage(stage_clear_img, f_width/2 - 295, f_height/2, this);
+
+	}
+	
+	public void Draw_StageNum(Image img)
+	{
+				
+		buffg.drawImage(img, f_width/2 - 295, f_height/2, this);
 
 	}
 	public void Draw_Background(){
