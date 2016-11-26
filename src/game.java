@@ -33,12 +33,14 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	boolean KeyRight = false;
 	boolean KeySpace = false; //missile
 	boolean KeyQ = false; //ultimate skill
+	boolean KeyT = false; //test key. score add
 	
 	int cnt;	//enemy made loop
 	
 	//speed setting
 	int player_Speed;
-	int missile_Speed; 
+	int missile_Speed;
+	int enemy_missile_Speed; 
 	int fire_Speed; 
 	int enemy_Speed; 
 	
@@ -64,6 +66,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	Image enemy_missile_img;
 	Image gameover_img;
 	Image boss1;
+	Image stage_clear_img;
 	
 	//to save shot missile
 	ArrayList Missile_List = new ArrayList();
@@ -112,14 +115,15 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		enemy_missile_img = new ImageIcon("images/enemy_shot.png").getImage();
 		gameover_img = new ImageIcon("images/game over.png").getImage();
 		boss1 = new ImageIcon("images/boss2.png").getImage();
-		
+		stage_clear_img = new ImageIcon("images/stage_clear.png").getImage();
 		//setting
 		game_Score = 0;	//initialize game score
 		player_Hitpoint = 3;	
 		boss_Hitpoint = 10;
 		  
 		player_Speed = 5; 
-		missile_Speed = 7; 
+		missile_Speed = 7;
+		enemy_missile_Speed = 7;
 		fire_Speed = 10; 
 		enemy_Speed = 3;
 
@@ -226,7 +230,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			
 			//enemy shoot
 			if ( cnt % 100 == 0){
-				ms = new Missile (en.x, en.y + 10, missile_Speed, 1);
+				ms = new Missile (en.x, en.y + 10, enemy_missile_Speed, 1);
 				Missile_List.add(ms);			
 			}
 			
@@ -288,8 +292,29 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			stage_clear = true;
 			Enemy_List.clear();
 			Missile_List.clear();
-
+			//Draw_StageClear();
+			//buffg = buffImg(stage_clear)
 		}
+		
+	}
+	 public void GotoNextStage()//if boss clear, few second wait and goto next stage. next stage's difficulty will increase.
+	{
+		 if(stage_clear == true)
+		 {
+			 try
+			 {
+				 stage_clear = false;
+				 Thread.sleep(5000);//10 second wait to prepare
+				 
+				 /////////difficulty up setting////////////////
+				 enemy_Speed += 2;
+				 enemy_missile_Speed += 4;
+				 boss_Status = 0;
+				 
+				 //buffg = buffImage.getGraphics();
+			 }
+			 catch (Exception e){}
+		 }
 	}
 		
 	 
@@ -318,6 +343,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		
 		if(all_stop == true)
 			Draw_GameOver(g);
+
 		else
 			update(g);
 		
@@ -330,6 +356,8 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		Draw_Missile(); 
 		Draw_Explosion();
 		Draw_StatusText();
+		if(stage_clear == true)
+			Draw_StageClear();
 		g.drawImage(buffImage, 0, 0, this); //draw image from buffer
 	}
 	
@@ -340,7 +368,12 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 
 		g.drawImage(buffImage, 0, 0, this); //draw image from buffer
 	}
-		
+	public void Draw_StageClear()
+	{
+				
+		buffg.drawImage(stage_clear_img, f_width/2 - 295, f_height/2, this);
+
+	}
 	public void Draw_Background(){
 		buffg.clearRect(0, 0, f_width, f_height);
 		if ( bx > - 600){		
@@ -438,6 +471,9 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			case KeyEvent.VK_Q : //ultimate skill
 				KeyQ = true;
 				break;
+			case KeyEvent.VK_T : //Test key, add 100 score
+				KeyT = true;
+				break;
 		}
 	}
 	
@@ -461,6 +497,9 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 				break;
 			case KeyEvent.VK_Q : //ultimate
 				KeyQ = false;
+				break;
+			case KeyEvent.VK_T : //test key
+				KeyT = false;
 				break;
 		}
 	}
@@ -500,6 +539,11 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			Missile_List.clear();
 			Q_available -= 1;
 			KeyQ = false;
+		}
+		if(KeyT == true) 
+		{
+			game_Score += 100;
+			KeyT = false;
 		}
 	}
 	
