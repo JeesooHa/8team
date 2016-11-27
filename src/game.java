@@ -16,10 +16,8 @@ public class game {
 }
 
 class game_Frame extends JFrame implements KeyListener, Runnable{ 
-	
 	private static boolean all_stop = false;
 	private static boolean stage_clear = false;
-	
 	private static int Q_available = 0;
 	
 	int f_width, f_height;	//frame size
@@ -37,6 +35,9 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	
 	int cnt;	//enemy made loop
 	
+	int state_status = 1;
+	boolean stage_draw = true;
+	
 	//speed setting
 	int player_Speed;
 	int missile_Speed;
@@ -44,13 +45,12 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	int fire_Speed; 
 	int enemy_Speed; 
 	
-	int game_Score;
+	int stage_Score;
+	int total_Score;
 	int player_Hitpoint; 
-	int player_Status = 0;	//0 : normal, 1 : missile shoot, 2 : crashed
 	
 	int boss_Hitpoint;
 	int boss_Status = 0;	//0: not appeared, 1: appeared, 2: destroyed
-	int boss_appeared_cond = 0; //whenever getting game score 200, boss apeared
 	int save_cnt = 0;
 	Thread th; 
 	
@@ -68,11 +68,16 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	Image gameover_img;
 	Image boss1;
 	Image stage_clear_img;
+	Image stage1;
+	Image stage2;
+	Image stage3;
+	Image start;
+	
 	
 	//to save shot missile
-	ArrayList Missile_List = new ArrayList();
-	ArrayList Enemy_List = new ArrayList();	
-	ArrayList Explosion_List = new ArrayList();
+	ArrayList<Missile> Missile_List = new ArrayList();
+	ArrayList<Enemy> Enemy_List = new ArrayList();	
+	ArrayList<Explosion> Explosion_List = new ArrayList();
 
 	//for double buffering
 	Image buffImage; 
@@ -116,9 +121,15 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		enemy_missile_img = new ImageIcon("images/enemy_shot.png").getImage();
 		gameover_img = new ImageIcon("images/game over.png").getImage();
 		boss1 = new ImageIcon("images/boss2.png").getImage();
-		stage_clear_img = new ImageIcon("images/stage_clear.png").getImage();
+		stage_clear_img = new ImageIcon("images/stage_clear.png").getImage();	
+		stage1 = new ImageIcon("images/stage01.png").getImage();
+		stage2 = new ImageIcon("images/stage02.png").getImage();
+		stage3 = new ImageIcon("images/stage03.png").getImage();
+		start = new ImageIcon("images/start.png").getImage();
+		
 		//setting
-		game_Score = 0;	//initialize game score
+		stage_Score = 0;
+		total_Score = 0;	//initialize game score
 		player_Hitpoint = 3;	
 		boss_Hitpoint = 10;
 		  
@@ -128,26 +139,25 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		fire_Speed = 10; 
 		enemy_Speed = 3;
 
-		Sound("sound/BGM01.wav",false);
+		Sound("sound/BGM01.wav",true);
 	}
 		
 	public void start(){	
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		addKeyListener(this);	//keyboard event	
-		th = new Thread(this);  // make thread
+		th = new Thread(this);  //make thread
 		th.start();	// thread start
 	}
 
 	public void run(){ 
 		try{
-			while(!all_stop){ 
-				
+			while(!all_stop){ 		
 				KeyProcess();	//get the keyboard value to update position
+				StageDrawProcess();
 				EnemyProcess();
 				MissileProcess();
 				ExplosionProcess();
 				repaint(); 		//repaint plane using new position
-				GotoNextStage();
 				StageClearProcess();				
 				Thread.sleep(20);	//delay time
 				cnt++;
@@ -158,14 +168,9 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	////////// Process ///////////
 	public void MissileProcess(){ 
 		
-		if ( KeySpace == true ){ //shooting
-			player_Status = 1;
-			
-			if( ( cnt % fire_Speed ) == 0){			
-				ms = new Missile(x + 155, y + 32,missile_Speed,0); //set missile position
-				Missile_List.add(ms);   //add missile to list
-			}		
-			
+		if ( KeySpace == true && (cnt % fire_Speed) == 0 ){ 	//plane shooting					
+			ms = new Missile(x + 155, y + 32,missile_Speed, 0); //set missile position
+			Missile_List.add(ms);   //add missile to list						
 		}
 		
 		for ( int i = 0 ; i < Missile_List.size() ; ++i){
@@ -196,20 +201,24 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 				else if(en.type == 3)	tmp = enemy_img3;
 				else if(en.type == 4)	tmp = boss1;
 				
+				//plane missile
 				if (Crash(ms.x, ms.y, en.x, en.y, missile_img, tmp) && ms.who==0){
 					Missile_List.remove(i);
 					
-					if(en.type == 4)
+					if(en.type == 4 && boss_Status == 1){	//boss
+						if(boss_Hitpoint < 1){
+							Enemy_List.remove(j);
+							boss_Status = 2;	//disappeared
+							stage_clear = true;
+						}
 						boss_Hitpoint -= 1;
-					
-					if(en.type != 4 || boss_Hitpoint < 1){
-						Enemy_List.remove(j);
-						if(en.type == 4 && boss_Status == 1)	boss_Status = 2;
 					}
+					else
+						Enemy_List.remove(j);
 								
-					game_Score += 10; //get score
+					stage_Score += 10; //get score
 					
-					if(game_Score % 150 == 0)	Q_available += 1;
+					if(stage_Score % 150 == 0)	Q_available += 1;
 					
 					//explision effect
 					ex = new Explosion(en.x + tmp.getWidth(null) / 2, en.y + tmp.getHeight(null) / 2 , 0);				
@@ -251,7 +260,6 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 								
 				ex = new Explosion(en.x + tmp.getWidth(null) / 2, en.y + tmp.getHeight(null) / 2, 0 );
 				Explosion_List.add(ex); 
-
 				ex = new Explosion(x+plane_img.getWidth(null) / 2, y+plane_img.getHeight(null)/ 2, 1 );
 				Explosion_List.add(ex);
 				
@@ -260,9 +268,9 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		}
 		
 		Random random = new Random();
-		
+	
 		//stage 1 boss appeared
-		if(game_Score/200 > boss_appeared_cond && boss_Status == 0){//make boss
+		if(stage_Score>200 && boss_Status == 0 && stage_clear == false){//make boss
 			boss_Hitpoint = 10;
 			en = new Enemy(f_width , f_height/3 , enemy_Speed, 4);
 			Enemy_List.add(en);
@@ -271,14 +279,11 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		
 		if ( cnt % 100 == 0 ){ //make enemy
 			en = new Enemy(f_width + random.nextInt(20)*10 + 20, random.nextInt(550) + 25, enemy_Speed,random.nextInt(3) + 1);
-			Enemy_List.add(en); 	
-			
-		}
-		
+			Enemy_List.add(en); 				
+		}		
 		if ( cnt % 170 == 0 ){ //make enemy
 			en = new Enemy(f_width + random.nextInt(7)*10 + 20, random.nextInt(550) + 25, enemy_Speed,random.nextInt(3) + 1);
-			Enemy_List.add(en); 	
-			
+			Enemy_List.add(en); 			
 		}
 
 	}
@@ -292,50 +297,51 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	}
 	 
 	 public void StageClearProcess(){
-		if(boss_Status == 2){
-			stage_clear = true;
+		if(stage_clear == true){		
+			save_cnt = cnt;			
+			total_Score += stage_Score;
+			stage_Score = 0;
 			Enemy_List.clear();
 			Missile_List.clear();
-			save_cnt = cnt;
-			//Draw_StageClear();
-			//buffg = buffImg(stage_clear)
+			/////////difficulty up setting////////////////
+			enemy_Speed += 2;
+			enemy_missile_Speed += 4;
+			boss_Status = 0;
+			//////////////////////////////////////////////
 			
+			for (int i = 0; i< 150; i++)//approximately 3 second wait to prepare
+			{
+				KeyProcess();
+				repaint();
+				try{
+					Thread.sleep(20);	//delay time
+				}
+				catch (Exception e){}
+			}
+			
+			stage_clear = false;	
+			stage_draw = true;
+			state_status +=1;
 		}
 		
 	}
-	 public void GotoNextStage()//if boss clear, few second wait and goto next stage. next stage's difficulty will increase.
-	{
-		 
-			 if(stage_clear == true)
-			 {
-				 for (int i = 0; i< 150; i++)//approximately 3 second wait to prepare
-				 {
-					 KeyProcess();
-					 repaint();
-					 try
-					 {
-						 Thread.sleep(20);	//delay time
-					 }
-					 catch (Exception e){}					
-				 }
-
-					 try
-					 {
-						 stage_clear = false;
-						 
-						 /////////difficulty up setting////////////////
-						 enemy_Speed += 2;
-						 enemy_missile_Speed += 4;
-						 boss_Status = 0;
-						 boss_appeared_cond += 1;
-						 //////////////////////////////////////////////
-					 }
-					 catch (Exception e){}
-
-			 }
-		 
-	}
-		
+	 
+	 public void StageDrawProcess(){
+			if(stage_draw == true){
+				
+				for (int i = 0; i< 150; i++)//approximately 3 second wait to prepare
+				{
+					KeyProcess();
+					repaint();
+					try{
+						Thread.sleep(20);	//delay time
+					}
+					catch (Exception e){}
+				}
+				stage_draw = false;
+			}
+			
+		}
 	 
 	 //////////// functions ////////////
 	 
@@ -362,7 +368,6 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		
 		if(all_stop == true)
 			Draw_GameOver(g);
-
 		else
 			update(g);
 		
@@ -371,6 +376,8 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	public void update(Graphics g){
 		Draw_Background(); 
 		Draw_Player();
+		if(stage_draw == true)
+			Draw_Stage();	
 		Draw_Enemy();
 		Draw_Missile(); 
 		Draw_Explosion();
@@ -378,20 +385,27 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		if(stage_clear == true)
 			Draw_StageClear();
 		g.drawImage(buffImage, 0, 0, this); //draw image from buffer
+		
+	}
+	
+	public void Draw_Stage(){		
+		if(state_status == 1){			
+			buffg.drawImage(stage1, f_width/2 - stage1.getWidth(null)/2, f_height/2  - stage1.getHeight(null), this);
+		}else if(state_status == 2){			
+			buffg.drawImage(stage2, f_width/2 - stage2.getWidth(null)/2, f_height/2 - stage2.getHeight(null), this);
+		}else{			
+			buffg.drawImage(stage3, f_width/2 - stage3.getWidth(null)/2, f_height/2 - stage3.getHeight(null), this);
+		}			
+		buffg.drawImage(start, f_width/2 - start.getWidth(null)/2, f_height/2  + start.getHeight(null), this);	
 	}
 	
 	public void Draw_GameOver(Graphics g){
-		
 		buffg.clearRect(0, 0, f_width, f_height);
 		buffg.drawImage(gameover_img, 0, 0, this);
-
 		g.drawImage(buffImage, 0, 0, this); //draw image from buffer
 	}
-	public void Draw_StageClear()
-	{
-				
-		buffg.drawImage(stage_clear_img, f_width/2 - 295, f_height/2, this);
-
+	public void Draw_StageClear(){				
+		buffg.drawImage(stage_clear_img, f_width/2 - stage_clear_img.getWidth(null)/2, f_height/2- stage_clear_img.getHeight(null)/2, this);
 	}
 	
 	public void Draw_StageNum(Image img)
@@ -408,7 +422,6 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			bx = 0;
 		}
 		buffg.drawImage(background_img, bx, 0, this);
-
 	}
 
 	public void Draw_Player(){ 
@@ -419,11 +432,9 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		for (int i = 0 ; i < Missile_List.size(); ++i){			
 			//get missile position
 			ms = (Missile) (Missile_List.get(i)); 			
-			//draw missile image to the current position
-			
+			//draw missile image to the current position			
 			if(ms.who == 0) //plane
-				buffg.drawImage(missile_img, ms.x, ms.y, this); 
-			
+				buffg.drawImage(missile_img, ms.x, ms.y, this); 			
 			if(ms.who == 1) //enemy
 				buffg.drawImage(enemy_missile_img, ms.x, ms.y, this); 
 		}
@@ -462,11 +473,13 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		Color white = new Color(255, 255, 255);
 		buffg.setColor(white);
 		buffg.setFont(new Font("Defualt", Font.BOLD, 20));
-		buffg.drawString("SCORE : " + game_Score, 1000, 70);
+		buffg.drawString("Total Score : " + total_Score, 1000, 50);
+		buffg.drawString("Stage Score : " + stage_Score, 1000, 70);
 		buffg.drawString("HitPoint : " + player_Hitpoint, 1000, 90);
 		buffg.drawString("Ultimate Skill : " + Q_available, 1000, 110);
-		if(boss_Status == 1)
-			buffg.drawString("Boss HP : " + boss_Hitpoint , 1000, 130);
+		buffg.drawString("boss_Status : " + boss_Status , 1000, 130);
+		//if(boss_Status == 1)			
+			//buffg.drawString("Boss HP : " + boss_Hitpoint , 1000, 130);
 		//buffg.drawString("save_cnt : " + save_cnt, 1000, 150);
 		buffg.drawString("cnt : " + (cnt - save_cnt), 1000, 150);
 		buffg.drawString("cnt-save_cnt : " + (cnt - save_cnt), 1000, 170);
@@ -538,22 +551,18 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 
 		if(KeyUp == true) {
 			if( y > 20 ) y -= 5;
-			player_Status = 0;
 		}
 
 		if(KeyDown == true) {
 			if( y+ plane_img.getHeight(null) < f_height ) y += 5;		
-			player_Status = 0;
 		}
 
 		if(KeyLeft == true) {
 			if ( x > 0 ) x -= 5;
-			player_Status = 0;
 		}
 
 		if(KeyRight == true) {
 			if ( x + plane_img.getWidth(null) < f_width ) x += 5;
-			player_Status = 0;
 		}
 		
 		if(KeyQ == true && Q_available > 0){
@@ -570,7 +579,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		}
 		if(KeyT == true) 
 		{
-			game_Score += 100;
+			stage_Score += 100;
 			KeyT = false;
 		}
 	}
