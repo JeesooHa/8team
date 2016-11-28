@@ -117,15 +117,15 @@ click the start.jar file.
 
 ##What to do later
 
-1. Apeear randomly of enemies.
+1. Apeear randomly of enemies. (done)
 
-2. How to end the game - All the HP points burned out
+2. How to end the game - All the HP points burned out (done)
 
 3. Adding Boss monster - one more image  (done)
 
 4. stage 2 - Blackground : Image which has long length of width 
 
-5. Ultimate skill -> Remove all bullets of enemies 
+5. Ultimate skill -> Remove all bullets of enemies (done) 
 
 6. Adding two more characters which user can select 
 
