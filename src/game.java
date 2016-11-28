@@ -169,7 +169,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	public void MissileProcess(){ 
 		
 		if ( KeySpace == true && (cnt % fire_Speed) == 0 ){ 	//plane shooting					
-			ms = new Missile(x + 155, y + 32,missile_Speed, 0); //set missile position
+			ms = new Missile(x + 155, y + 32, missile_Speed, 0); //set missile position
 			Missile_List.add(ms);   //add missile to list						
 		}
 		
@@ -240,16 +240,20 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 				Enemy_List.remove(i); 
 			}		
 			
-			//enemy shoot
-			if ( cnt % 100 == 0){
-				ms = new Missile (en.x, en.y + 10, enemy_missile_Speed, 1);
-				Missile_List.add(ms);			
-			}
-			
 			Image tmp = enemy_img1;				
 			if(en.type == 2)	tmp = enemy_img2;
 			else if(en.type == 3)	tmp = enemy_img3;
 			else if(en.type == 4)	tmp = boss1;
+			
+			//enemy shoot
+			if ( cnt % 100 == 0){
+				
+				if(en.type != 4)
+					ms = new Missile (en.x, en.y + 10, enemy_missile_Speed, 1);
+				else
+					ms = new Missile (en.x, en.y + boss1.getHeight(null)/2, enemy_missile_Speed, 1);
+				Missile_List.add(ms);			
+			}
 			
 			//crashed with enemy
 			if(Crash(x, y, en.x, en.y, plane_img, tmp)){
@@ -271,7 +275,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	
 		//stage 1 boss appeared
 		if(stage_Score>200 && boss_Status == 0 && stage_clear == false){//make boss
-			boss_Hitpoint = 10;
+			boss_Hitpoint = 50;
 			en = new Enemy(f_width , f_height/3 , enemy_Speed, 4);
 			Enemy_List.add(en);
 			boss_Status = 1;
