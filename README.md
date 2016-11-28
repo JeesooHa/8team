@@ -121,7 +121,7 @@ click the start.jar file.
 
 2. How to end the game - All the HP points burned out
 
-3. Adding Boss monster - one more image  
+3. Adding Boss monster - one more image  (done)
 
 4. stage 2 - Blackground : Image which has long length of width 
 
