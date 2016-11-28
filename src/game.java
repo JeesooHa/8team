@@ -35,7 +35,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	
 	int cnt;	//enemy made loop
 	
-	int state_status = 1;
+	int stage_status = 1;
 	boolean stage_draw = true;
 	
 	//speed setting
@@ -59,6 +59,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	//for animation
 	Image plane_img;
 	Image background_img; 
+	Image background_img2; 
 	Image explo_img; 
 	Image missile_img;
 	Image enemy_img1;
@@ -72,6 +73,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	Image stage2;
 	Image stage3;
 	Image start;
+	Image boss_missile_img;
 	
 	
 	//to save shot missile
@@ -117,6 +119,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		enemy_img2 = new ImageIcon("images/enemy2.png").getImage();	
 		enemy_img3 = new ImageIcon("images/enemy3.png").getImage();	
 		background_img = new ImageIcon("images/background1.jpg").getImage();
+		background_img2 = new ImageIcon("images/background2.png").getImage();
 		explo_img = new ImageIcon("images/enemy_explosion.png").getImage();
 		enemy_missile_img = new ImageIcon("images/enemy_shot.png").getImage();
 		gameover_img = new ImageIcon("images/game over.png").getImage();
@@ -126,6 +129,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		stage2 = new ImageIcon("images/stage02.png").getImage();
 		stage3 = new ImageIcon("images/stage03.png").getImage();
 		start = new ImageIcon("images/start.png").getImage();
+		boss_missile_img = new ImageIcon("images/boss_laser.png").getImage();
 		
 		//setting
 		stage_Score = 0;
@@ -169,7 +173,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	public void MissileProcess(){ 
 		
 		if ( KeySpace == true && (cnt % fire_Speed) == 0 ){ 	//plane shooting					
-			ms = new Missile(x + 155, y + 32, missile_Speed, 0); //set missile position
+			ms = new Missile(missile_img, x + 155, y + 32, missile_Speed, 0); //set missile position
 			Missile_List.add(ms);   //add missile to list						
 		}
 		
@@ -183,7 +187,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			}
 			
 			//enemy missile shot
-			if (Crash(x, y, ms.x, ms.y, plane_img, missile_img) && ms.who == 1 ) {
+			if (Crash(x, y, ms.x, ms.y, plane_img, ms.type) && ms.who == 1 ) {
 				player_Hitpoint --;
 				GameOver(player_Hitpoint);
 				
@@ -202,7 +206,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 				else if(en.type == 4)	tmp = boss1;
 				
 				//plane missile
-				if (Crash(ms.x, ms.y, en.x, en.y, missile_img, tmp) && ms.who==0){
+				if (Crash(ms.x, ms.y, en.x, en.y, ms.type, tmp) && ms.who==0){
 					Missile_List.remove(i);
 					
 					if(en.type == 4 && boss_Status == 1){	//boss
@@ -249,9 +253,10 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			if ( cnt % 100 == 0){
 				
 				if(en.type != 4)
-					ms = new Missile (en.x, en.y + 10, enemy_missile_Speed, 1);
+					ms = new Missile (enemy_missile_img, en.x, en.y + 10, enemy_missile_Speed, 1);
 				else
-					ms = new Missile (en.x, en.y + boss1.getHeight(null)/2, enemy_missile_Speed, 1);
+					ms = new Missile (boss_missile_img, en.x, en.y + boss1.getHeight(null)/2, enemy_missile_Speed, 1);
+			
 				Missile_List.add(ms);			
 			}
 			
@@ -325,7 +330,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			
 			stage_clear = false;	
 			stage_draw = true;
-			state_status +=1;
+			stage_status +=1;
 		}
 		
 	}
@@ -393,9 +398,9 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	}
 	
 	public void Draw_Stage(){		
-		if(state_status == 1){			
+		if(stage_status == 1){			
 			buffg.drawImage(stage1, f_width/2 - stage1.getWidth(null)/2, f_height/2  - stage1.getHeight(null), this);
-		}else if(state_status == 2){			
+		}else if(stage_status == 2){			
 			buffg.drawImage(stage2, f_width/2 - stage2.getWidth(null)/2, f_height/2 - stage2.getHeight(null), this);
 		}else{			
 			buffg.drawImage(stage3, f_width/2 - stage3.getWidth(null)/2, f_height/2 - stage3.getHeight(null), this);
@@ -413,19 +418,23 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	}
 	
 	public void Draw_StageNum(Image img)
-	{
-				
+	{			
 		buffg.drawImage(img, f_width/2 - 295, f_height/2, this);
-
 	}
-	public void Draw_Background(){
+	public void Draw_Background(){		
 		buffg.clearRect(0, 0, f_width, f_height);
 		if ( bx > - 600){		
 			bx -= 1;
 		}else {			
 			bx = 0;
 		}
-		buffg.drawImage(background_img, bx, 0, this);
+		if(stage_status == 1)
+			buffg.drawImage(background_img, bx, 0, this);
+		else if(stage_status == 2)
+			buffg.drawImage(background_img2, bx, 0, this);
+		else
+			buffg.drawImage(background_img, bx, 0, this);
+			
 	}
 
 	public void Draw_Player(){ 
@@ -439,8 +448,11 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			//draw missile image to the current position			
 			if(ms.who == 0) //plane
 				buffg.drawImage(missile_img, ms.x, ms.y, this); 			
-			if(ms.who == 1) //enemy
-				buffg.drawImage(enemy_missile_img, ms.x, ms.y, this); 
+			if(ms.who == 1)//enemy				
+				buffg.drawImage(ms.type, ms.x, ms.y, this);
+				
+			
+			
 		}
 	}
 
@@ -485,8 +497,8 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		//if(boss_Status == 1)			
 			//buffg.drawString("Boss HP : " + boss_Hitpoint , 1000, 130);
 		//buffg.drawString("save_cnt : " + save_cnt, 1000, 150);
-		buffg.drawString("cnt : " + (cnt - save_cnt), 1000, 150);
-		buffg.drawString("cnt-save_cnt : " + (cnt - save_cnt), 1000, 170);
+		//buffg.drawString("cnt : " + (cnt - save_cnt), 1000, 150);
+		//buffg.drawString("cnt-save_cnt : " + (cnt - save_cnt), 1000, 170);
 		//buffg.drawString("Missile Count : " + Missile_List.size(), 1000, 110);
 		//buffg.drawString("Enemy Count : " + Enemy_List.size(), 1000, 130);
 	}
@@ -622,10 +634,12 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 
 class Missile{ 
 	//missile position variable
+	Image type;
 	int x,y,speed;
 	int who;	// 0: plane, 1: enemy
 	
-	Missile(int x, int y, int speed,int who){ //get missile position
+	Missile(Image img, int x, int y, int speed,int who){ //get missile position
+		this.type = img;
 		this.x = x;
 		this.y = y;
 		this.speed = speed;
