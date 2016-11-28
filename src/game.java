@@ -493,14 +493,9 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		buffg.drawString("Stage Score : " + stage_Score, 1000, 70);
 		buffg.drawString("HitPoint : " + player_Hitpoint, 1000, 90);
 		buffg.drawString("Ultimate Skill : " + Q_available, 1000, 110);
-		buffg.drawString("boss_Status : " + boss_Status , 1000, 130);
-		//if(boss_Status == 1)			
-			//buffg.drawString("Boss HP : " + boss_Hitpoint , 1000, 130);
-		//buffg.drawString("save_cnt : " + save_cnt, 1000, 150);
-		//buffg.drawString("cnt : " + (cnt - save_cnt), 1000, 150);
-		//buffg.drawString("cnt-save_cnt : " + (cnt - save_cnt), 1000, 170);
-		//buffg.drawString("Missile Count : " + Missile_List.size(), 1000, 110);
-		//buffg.drawString("Enemy Count : " + Enemy_List.size(), 1000, 130);
+		if(boss_Status == 1)		
+		buffg.drawString("Boss HP : " + boss_Hitpoint , 1000, 130);
+
 	}
 	
 	
