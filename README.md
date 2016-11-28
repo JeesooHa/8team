@@ -106,7 +106,9 @@ click the start.jar file.
 
 * Adding Background music and sound effect
 
+* Adding stage and stage clear message
 
+* Adding stage 1 boss
 ### Detail of Game
 
 * image
