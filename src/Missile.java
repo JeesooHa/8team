@@ -1,27 +1,36 @@
+import java.awt.Image;
 
 public class Missile 
 {
-	
-		 int x;
-		 int y;
-		 int angle;
-		 int speed;
+	Image type;
+	int x;
+	int y;
+	int angle;// 0 is direct.
+	int speed;
+	int who;// 0: plane, 1: enemy
+	Missile(Image img, int x, int y, int speed, int who, int angle) 
+	{
+		this.x = x;
+		this.y = y;
 
-		 Missile(int x, int y, int angle, int speed) 
-		 {
-			 this.x = x;
-			 this.y = y;
+		this.angle = angle;
 
-			 this.angle = angle;
+		this.speed = speed;
+		this.who = who;
+	}
 
-			 this.speed = speed;
-
-		 }
-
-		 public void move() 
-		 {
-			 x += Math.cos(Math.toRadians(angle))*speed;
-			 y += Math.sin(Math.toRadians(angle))*speed;
-		 }
+	public void move() 
+	{
+		if(this.who == 0)
+		{
+			x += Math.cos(Math.toRadians(angle))*speed;
+			y += Math.sin(Math.toRadians(angle))*speed;
+		}
+		else
+		{
+			x -= Math.cos(Math.toRadians(angle))*speed;
+			y -= Math.sin(Math.toRadians(angle))*speed;
+		}
+	}
 		
 }
