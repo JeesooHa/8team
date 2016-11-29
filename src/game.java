@@ -255,19 +255,39 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			if ( cnt % 100 == 0){
 				
 				if(en.type != 4)
-					ms = new Missile (enemy_missile_img, en.x, en.y + 10, enemy_missile_Speed, 1,0);
-				else	//boss shot
 				{
-					ms = new Missile (boss_missile_img, en.x, en.y + boss1.getHeight(null)/2, enemy_missile_Speed + 3, 1,0);
+					ms = new Missile (enemy_missile_img, en.x, en.y + 10, enemy_missile_Speed, 1,0);
 					Missile_List.add(ms);
-					ms = new Missile (boss_missile_img, en.x, en.y + boss1.getHeight(null)/2, enemy_missile_Speed + 3, 1,330);
-					Missile_List.add(ms);
-					ms = new Missile (boss_missile_img, en.x, en.y + boss1.getHeight(null)/2, enemy_missile_Speed + 3, 1,30);
 				}
+				
 			
-				Missile_List.add(ms);			
+						
 			}
-			
+			if(en.type == 4)	//boss shot
+			{
+				if(cnt % 70 == 0)
+				{
+					ms = new Missile (boss_missile_img, en.x, en.y + boss1.getHeight(null)/2, enemy_missile_Speed + 3, 1,330);//upward direction
+					Missile_List.add(ms);
+					ms = new Missile (boss_missile_img, en.x, en.y + boss1.getHeight(null)/2, enemy_missile_Speed + 3, 1,30);//downward direction
+					Missile_List.add(ms);
+				}
+				if(cnt % 30 == 0)
+				{
+					int a;
+					Random random_shot = new Random();
+					a = random_shot.nextInt(3);
+					if(a == 0)
+						ms = new Missile (boss_missile_img, en.x, en.y + boss1.getHeight(null)/6, enemy_missile_Speed + 3, 1,0);//direct direction
+					else if(a == 1)
+						ms = new Missile (boss_missile_img, en.x, en.y + boss1.getHeight(null)/2, enemy_missile_Speed + 3, 1,0);//direct direction
+					else
+						ms = new Missile (boss_missile_img, en.x, en.y + 5*boss1.getHeight(null)/6, enemy_missile_Speed + 3, 1,0);//direct direction
+					
+					Missile_List.add(ms);
+				}
+				
+			}
 			//crashed with enemy
 			if(Crash(x, y, en.x, en.y, plane_img, tmp)){
 
@@ -291,6 +311,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		{
 			boss_stage = true;
 			boss_Hitpoint = 50;
+			
 			en = new Enemy(f_width , f_height/3 , enemy_Speed, 4);
 			Enemy_List.add(en);
 			boss_Status = 1;
