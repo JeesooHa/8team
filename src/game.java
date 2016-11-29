@@ -257,7 +257,13 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 				if(en.type != 4)
 					ms = new Missile (enemy_missile_img, en.x, en.y + 10, enemy_missile_Speed, 1,0);
 				else	//boss shot
-					ms = new Missile (boss_missile_img, en.x, en.y + boss1.getHeight(null)/2, enemy_missile_Speed, 1,0);
+				{
+					ms = new Missile (boss_missile_img, en.x, en.y + boss1.getHeight(null)/2, enemy_missile_Speed + 3, 1,0);
+					Missile_List.add(ms);
+					ms = new Missile (boss_missile_img, en.x, en.y + boss1.getHeight(null)/2, enemy_missile_Speed + 3, 1,330);
+					Missile_List.add(ms);
+					ms = new Missile (boss_missile_img, en.x, en.y + boss1.getHeight(null)/2, enemy_missile_Speed + 3, 1,30);
+				}
 			
 				Missile_List.add(ms);			
 			}
@@ -626,35 +632,8 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			all_stop = true;
 			Sound("sound/Game_Over_sound_effect.wav",false);
 		}
-	}
-
-	
+	}	
 }
-
-
-
-/*class Missile{ 
-	//missile position variable
-	Image type;
-	int x,y,speed;
-	int who;	// 0: plane, 1: enemy
-	
-	Missile(Image img, int x, int y, int speed,int who){ //get missile position
-		this.type = img;
-		this.x = x;
-		this.y = y;
-		this.speed = speed;
-		this.who = who;
-	}
-
-	public void move(){ //move missile
-		if(this.who == 0)
-			x += speed; 
-		else
-			x -= speed;
-
-	}
-}*/
 
 class Enemy{ 
 	int x,y,speed;
