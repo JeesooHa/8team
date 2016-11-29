@@ -10,6 +10,7 @@ public class Missile
 	int who;// 0: plane, 1: enemy
 	Missile(Image img, int x, int y, int speed, int who, int angle) 
 	{
+		this.type = img;
 		this.x = x;
 		this.y = y;
 

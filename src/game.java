@@ -175,7 +175,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	public void MissileProcess(){ 
 		
 		if ( KeySpace == true && (cnt % fire_Speed) == 0 ){ 	//plane shooting					
-			ms = new Missile(missile_img, x + 155, y + 32, missile_Speed, 0); //set missile position
+			ms = new Missile(missile_img, x + 155, y + 32, missile_Speed, 0, 0); //set missile position
 			Missile_List.add(ms);   //add missile to list						
 		}
 		
@@ -255,9 +255,9 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			if ( cnt % 100 == 0){
 				
 				if(en.type != 4)
-					ms = new Missile (enemy_missile_img, en.x, en.y + 10, enemy_missile_Speed, 1);
-				else
-					ms = new Missile (boss_missile_img, en.x, en.y + boss1.getHeight(null)/2, enemy_missile_Speed, 1);
+					ms = new Missile (enemy_missile_img, en.x, en.y + 10, enemy_missile_Speed, 1,0);
+				else	//boss shot
+					ms = new Missile (boss_missile_img, en.x, en.y + boss1.getHeight(null)/2, enemy_missile_Speed, 1,0);
 			
 				Missile_List.add(ms);			
 			}
@@ -500,7 +500,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		buffg.drawString("HitPoint : " + player_Hitpoint, 1000, 90);
 		buffg.drawString("Ultimate Skill : " + Q_available, 1000, 110);
 		if(boss_Status == 1)		
-		buffg.drawString("Boss HP : " + boss_Hitpoint , 1000, 130);
+			buffg.drawString("Boss HP : " + boss_Hitpoint , 1000, 130);
 
 	}
 	
@@ -633,7 +633,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 
 
 
-class Missile{ 
+/*class Missile{ 
 	//missile position variable
 	Image type;
 	int x,y,speed;
@@ -654,7 +654,7 @@ class Missile{
 			x -= speed;
 
 	}
-}
+}*/
 
 class Enemy{ 
 	int x,y,speed;
