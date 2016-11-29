@@ -40,17 +40,19 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	
 	boolean boss_stage = false;//false : normal stage, true : boss stage
 	
+	double m_angle = 0;
+	double d_xy;
+	double dx;
 	//speed setting
 	int player_Speed;
 	int missile_Speed;
 	int enemy_missile_Speed; 
 	int fire_Speed; 
 	int enemy_Speed; 
-	
 	int stage_Score;
 	int total_Score;
 	int player_Hitpoint; 
-	
+	int Tangle = 0;
 	int boss_Hitpoint;
 	int boss_Status = 0;	//0: not appeared, 1: appeared, 2: destroyed
 	int save_cnt = 0;
@@ -265,18 +267,43 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			}
 			if(en.type == 4)	//boss shot
 			{
+				int a;
+				Random random_shot = new Random();
+				a = random_shot.nextInt(3);
+				if(cnt % 80 == 0)
+				{
+					int tmp_a;
+					tmp_a = a+1;
+						ms = new Missile (boss_missile_img, en.x, en.y + boss1.getHeight(null)/2, enemy_missile_Speed + 3, 1,360 - tmp_a*10);//upward direction
+						Missile_List.add(ms);
+						ms = new Missile (boss_missile_img, en.x, en.y + boss1.getHeight(null)/2, enemy_missile_Speed + 3, 1,tmp_a*10);//downward direction
+						Missile_List.add(ms);
+				}
+				////////////get wrong value when get dx and dy////////////////////
+				/*if(cnt % 100 == 0 && en.x == 900 && en.y == 200)//if there is only boss and user
+				{
+
+					//double dx;
+					double dy;
+					//double d_xy;
+					int in_angle = 0;
+					dx = (double) (x - ex.x);
+					dy = (double) (y - ex.y);
+					d_xy = Math.sqrt((dx*dx) + (dy*dy));
+					m_angle = Math.acos(dx/d_xy);
+			
+					in_angle = (int)Math.toDegrees(m_angle);
+					Tangle = in_angle;
+					if(in_angle < 0)
+						in_angle = 360 + in_angle;
+					
+					ms = new Missile (boss_missile_img, en.x, en.y + boss1.getHeight(null)/2, enemy_missile_Speed + 3, 1, in_angle);//to user direction
+					Missile_List.add(ms);
+				}*/
+
 				if(cnt % 70 == 0)
 				{
-					ms = new Missile (boss_missile_img, en.x, en.y + boss1.getHeight(null)/2, enemy_missile_Speed + 3, 1,330);//upward direction
-					Missile_List.add(ms);
-					ms = new Missile (boss_missile_img, en.x, en.y + boss1.getHeight(null)/2, enemy_missile_Speed + 3, 1,30);//downward direction
-					Missile_List.add(ms);
-				}
-				if(cnt % 30 == 0)
-				{
-					int a;
-					Random random_shot = new Random();
-					a = random_shot.nextInt(3);
+					
 					if(a == 0)
 						ms = new Missile (boss_missile_img, en.x, en.y + boss1.getHeight(null)/6, enemy_missile_Speed + 3, 1,0);//direct direction
 					else if(a == 1)
@@ -526,8 +553,15 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		buffg.drawString("Stage Score : " + stage_Score, 1000, 70);
 		buffg.drawString("HitPoint : " + player_Hitpoint, 1000, 90);
 		buffg.drawString("Ultimate Skill : " + Q_available, 1000, 110);
-		if(boss_Status == 1)		
+		if(boss_Status == 1)	
+		{
 			buffg.drawString("Boss HP : " + boss_Hitpoint , 1000, 130);
+			buffg.drawString("Tangle : " + Tangle , 1000, 150);
+			buffg.drawString("x : " + x , 1000, 170);
+			buffg.drawString("dx : " + dx , 1000, 190);
+			buffg.drawString("enx : " + en.x , 1000, 210);
+			buffg.drawString("dxt : " + d_xy , 1000, 230);
+		}
 
 	}
 	
