@@ -38,6 +38,8 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	int stage_status = 1;
 	boolean stage_draw = true;
 	
+	boolean boss_stage = false;//false : normal stage, true : boss stage
+	
 	//speed setting
 	int player_Speed;
 	int missile_Speed;
@@ -279,20 +281,24 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		Random random = new Random();
 	
 		//stage 1 boss appeared
-		if(stage_Score>200 && boss_Status == 0 && stage_clear == false){//make boss
+		if(stage_Score>200 && boss_Status == 0 && stage_clear == false)//make boss
+		{
+			boss_stage = true;
 			boss_Hitpoint = 50;
 			en = new Enemy(f_width , f_height/3 , enemy_Speed, 4);
 			Enemy_List.add(en);
 			boss_Status = 1;
 		}
-		
-		if ( cnt % 100 == 0 ){ //make enemy
-			en = new Enemy(f_width + random.nextInt(20)*10 + 20, random.nextInt(550) + 25, enemy_Speed,random.nextInt(3) + 1);
-			Enemy_List.add(en); 				
-		}		
-		if ( cnt % 170 == 0 ){ //make enemy
-			en = new Enemy(f_width + random.nextInt(7)*10 + 20, random.nextInt(550) + 25, enemy_Speed,random.nextInt(3) + 1);
-			Enemy_List.add(en); 			
+		if(boss_stage == false)
+		{
+			if ( cnt % 100 == 0 ){ //make enemy
+				en = new Enemy(f_width + random.nextInt(20)*10 + 20, random.nextInt(550) + 25, enemy_Speed,random.nextInt(3) + 1);
+				Enemy_List.add(en); 				
+			}		
+			if ( cnt % 170 == 0 ){ //make enemy
+				en = new Enemy(f_width + random.nextInt(7)*10 + 20, random.nextInt(550) + 25, enemy_Speed,random.nextInt(3) + 1);
+				Enemy_List.add(en); 			
+			}
 		}
 
 	}
@@ -314,9 +320,9 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			Missile_List.clear();
 			/////////difficulty up setting////////////////
 			enemy_Speed += 2;
-			enemy_missile_Speed += 4;
-			boss_Status = 0;
+			enemy_missile_Speed += 4;	
 			//////////////////////////////////////////////
+			boss_Status = 0;
 			
 			for (int i = 0; i< 150; i++)//approximately 3 second wait to prepare
 			{
@@ -327,7 +333,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 				}
 				catch (Exception e){}
 			}
-			
+			boss_stage = false;
 			stage_clear = false;	
 			stage_draw = true;
 			stage_status +=1;
