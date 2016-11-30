@@ -226,7 +226,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 								
 					stage_Score += 10; //get score
 					
-					if(stage_Score % 150 == 0)	Q_available += 1;
+					if(stage_Score % 200 == 0)	Q_available += 1;
 					
 					//explision effect
 					ex = new Explosion(en.x + tmp.getWidth(null) / 2, en.y + tmp.getHeight(null) / 2 , 0);				
