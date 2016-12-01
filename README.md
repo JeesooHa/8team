@@ -81,7 +81,7 @@ click the start.jar file.
 
 ##Execute Image
 
-<img src ="https://github.com/JeesooHa/8team/blob/master/execute%20image.JPG" height = "400">
+<img src ="https://github.com/JeesooHa/8team/blob/master/images/execute%20image.JPG" height = "400">
 
 
 ## Code
@@ -109,9 +109,6 @@ click the start.jar file.
 * Adding stage and stage clear message
 
 * Adding stage 1 boss
-### Detail of Game
-
-* image
 
 
 
