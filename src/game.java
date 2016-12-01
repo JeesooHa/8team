@@ -138,7 +138,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		//setting
 		stage_Score = 0;
 		total_Score = 0;	//initialize game score
-		player_Hitpoint = 10;	
+		player_Hitpoint = 3;	
 		boss_Hitpoint = 3;
 		  
 		player_Speed = 5; 
