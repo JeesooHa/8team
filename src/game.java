@@ -374,7 +374,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			Missile_List.clear();
 			/////////difficulty up setting////////////////
 			enemy_Speed += 2;
-			enemy_missile_Speed += 4;	
+			enemy_missile_Speed += 2;	
 			//////////////////////////////////////////////
 			boss_Status = 0;
 			
@@ -691,41 +691,4 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		}
 	}	
 }
-/*
-class Enemy{ 
-	int x,y,speed;
-	int type;
-	
-	Enemy(int x, int y, int speed,int type){
-		this.x = x;
-		this.y = y;
-		this.speed = speed;
-		this.type = type;
-	}
-	
-	public void move(){
-		if(this.type != 4)
-			x -= speed;
-		else
-			if(x>900)	x -= speed;
-	}
-}
 
-
-class Explosion{ 
-	int x,y;
-	int ex_cnt;
-	int damage; 
-
-	Explosion(int x, int y, int damage){
-		this.x = x;
-		this.y = y;
-		this.damage = damage;
-	}
-	
-	public void effect(){
-		ex_cnt ++;
-	}		
-}
-
-*/
