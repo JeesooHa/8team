@@ -216,10 +216,12 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 				else if(en.type == 6)	tmp = boss3;
 				
 				//plane missile
-				if (Crash(ms.x, ms.y, en.x, en.y, ms.type, tmp) && ms.who==0){
+				if (Crash(ms.x, ms.y, en.x, en.y, ms.type, tmp) && ms.who==0)
+				{
 					Missile_List.remove(i);
 					
-					if((en.type >= 4 ) && boss_Status == 1){	//boss
+					if((en.type >= 4 ) && boss_Status == 1)
+					{	//boss
 						if(boss_Hitpoint < 1){
 							Enemy_List.remove(j);
 							boss_Status = 2;	//disappeared
@@ -686,14 +688,16 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		
 		if(KeyQ == true && Q_available > 0){
 			Sound("sound/ultimate_skill.wav",false);
-			for(int i = 0; i < Enemy_List.size(); i++){
+			for(int i = 0; i < Enemy_List.size(); i++)
+			{
 				Enemy en = ((Enemy) Enemy_List.get(i));
-				if(en.type != 4)
-					Enemy_List.remove(i);
-				else if(en.type == 4)
+				
+				if(en.type >= 4)
 				{
 					boss_Hitpoint -= 5;
 				}
+				else if(en.type != 4)
+					Enemy_List.remove(i);
 			}
 			
 			Missile_List.clear();
@@ -703,6 +707,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		if(KeyT == true) 
 		{
 			stage_Score += 100;
+			Q_available += 1;
 			KeyT = false;
 		}
 	}
