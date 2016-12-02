@@ -234,7 +234,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 					
 					if(stage_Score % 200 == 0)	Q_available += 1;
 					
-					//explision effect
+					//explosion effect
 					ex = new Explosion(en.x + tmp.getWidth(null) / 2, en.y + tmp.getHeight(null) / 2 , 0);				
 					Explosion_List.add(ex); 
 					Sound("sound/explosion_sound.wav",false);
@@ -690,6 +690,10 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 				Enemy en = ((Enemy) Enemy_List.get(i));
 				if(en.type != 4)
 					Enemy_List.remove(i);
+				else if(en.type == 4)
+				{
+					boss_Hitpoint -= 5;
+				}
 			}
 			
 			Missile_List.clear();
