@@ -18,6 +18,7 @@ public class game {
 class game_Frame extends JFrame implements KeyListener, Runnable{ 
 	private static boolean all_stop = false;
 	private static boolean stage_clear = false;
+	private static int stage = 1;
 	private static int Q_available = 0;
 	
 	int f_width, f_height;	//frame size
@@ -72,6 +73,8 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	Image enemy_missile_img;
 	Image gameover_img;
 	Image boss1;
+	Image boss2;
+	Image boss3;
 	Image stage_clear_img;
 	Image stage1;
 	Image stage2;
@@ -127,8 +130,10 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		explo_img = new ImageIcon("images/enemy_explosion.png").getImage();
 		enemy_missile_img = new ImageIcon("images/enemy_shot.png").getImage();
 		gameover_img = new ImageIcon("images/game over.png").getImage();
-		boss1 = new ImageIcon("images/boss2.png").getImage();
 		stage_clear_img = new ImageIcon("images/stage_clear.png").getImage();	
+		boss1 = new ImageIcon("images/boss2.png").getImage();
+		boss2 = new ImageIcon("images/ufo_img.jpg").getImage();
+		boss3 = new ImageIcon("images/boss_body.png").getImage();
 		stage1 = new ImageIcon("images/stage01.png").getImage();
 		stage2 = new ImageIcon("images/stage02.png").getImage();
 		stage3 = new ImageIcon("images/stage03.png").getImage();
@@ -139,7 +144,6 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		stage_Score = 0;
 		total_Score = 0;	//initialize game score
 		player_Hitpoint = 3;	
-		boss_Hitpoint = 3;
 		  
 		player_Speed = 5; 
 		missile_Speed = 7;
@@ -208,12 +212,14 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 				if(en.type == 2)	tmp = enemy_img2;
 				else if(en.type == 3)	tmp = enemy_img3;
 				else if(en.type == 4)	tmp = boss1;
+				else if(en.type == 5)	tmp = boss2;
+				else if(en.type == 6)	tmp = boss3;
 				
 				//plane missile
 				if (Crash(ms.x, ms.y, en.x, en.y, ms.type, tmp) && ms.who==0){
 					Missile_List.remove(i);
 					
-					if(en.type == 4 && boss_Status == 1){	//boss
+					if((en.type >= 4 ) && boss_Status == 1){	//boss
 						if(boss_Hitpoint < 1){
 							Enemy_List.remove(j);
 							boss_Status = 2;	//disappeared
@@ -252,16 +258,18 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			if(en.type == 2)	tmp = enemy_img2;
 			else if(en.type == 3)	tmp = enemy_img3;
 			else if(en.type == 4)	tmp = boss1;
+			else if(en.type == 5)	tmp = boss2;
+			else if(en.type == 6)	tmp = boss3;
 			
 			//enemy shoot
 			if ( cnt % 100 == 0){
-				if(en.type != 4)
+				if(en.type <4)
 				{
 					ms = new Missile (enemy_missile_img, en.x, en.y + 10, enemy_missile_Speed, 1,0);
 					Missile_List.add(ms);
 				}	
 			}
-			if(en.type == 4)	//boss shot
+			if(en.type >=4)	//boss shot
 			{
 				int a;
 				Random random_shot = new Random();
@@ -317,7 +325,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 				player_Hitpoint --; 
 				GameOver(player_Hitpoint);	
 				
-				if(en.type == 4 && boss_Status == 1){	//boss
+				if(en.type >= 4&& boss_Status == 1){	//boss
 					if(boss_Hitpoint < 1){
 						Enemy_List.remove(i);
 						boss_Status = 2;	//disappeared
@@ -341,15 +349,36 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		Random random = new Random();
 	
 		//stage 1 boss appeared
-		if(stage_Score>200 && boss_Status == 0 && stage_clear == false)//make boss
+		if(stage_Score>200 && boss_Status == 0 && stage_clear == false && stage == 1)//make boss
 		{
 			boss_stage = true;
-			boss_Hitpoint = 50;
-			
+			boss_Hitpoint = 50;		
 			en = new Enemy(f_width , f_height/3 , enemy_Speed, 4);
 			Enemy_List.add(en);
 			boss_Status = 1;
 		}
+		//stage 2 boss appeared
+		else if(stage_Score>200 && boss_Status == 0 && stage_clear == false&& stage ==2)//make boss
+		{
+			boss_stage = true;
+			boss_Hitpoint = 50;		
+			en = new Enemy(f_width , f_height/3 , enemy_Speed, 5);
+			Enemy_List.add(en);
+			boss_Status = 1;
+		}
+		//stage 3 boss appeared
+		else if(stage_Score>200 && boss_Status == 0 && stage_clear == false&& stage == 3)//make boss
+		{
+			boss_stage = true;
+			boss_Hitpoint = 50;		
+			en = new Enemy(f_width , f_height/3 , enemy_Speed, 6);
+			Enemy_List.add(en);
+			boss_Status = 1;
+		}
+		
+		
+		
+		
 		if(boss_stage == false)
 		{
 			if ( cnt % 100 == 0 ){ //make enemy
@@ -373,7 +402,8 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	}
 	 
 	 public void StageClearProcess(){
-		if(stage_clear == true){		
+		if(stage_clear == true){
+			stage++;
 			save_cnt = cnt;			
 			total_Score += stage_Score;
 			stage_Score = 0;
@@ -532,6 +562,8 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			if(en.type == 2)	tmp = enemy_img2;
 			else if(en.type == 3)	tmp = enemy_img3;
 			else if(en.type == 4)	tmp = boss1; 
+			else if(en.type == 5)	tmp = boss2;
+			else if(en.type == 6)	tmp = boss3;
 			
 			buffg.drawImage(tmp, en.x, en.y, this);	
 		}

@@ -14,7 +14,7 @@ public class Enemy
 	
 	public void move()
 	{
-		if(this.type != 4)
+		if(this.type < 4)
 			x -= speed;
 		else
 			if(x>900)	x -= speed;
