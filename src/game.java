@@ -131,7 +131,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		enemy_missile_img = new ImageIcon("images/enemy_shot.png").getImage();
 		gameover_img = new ImageIcon("images/game over.png").getImage();
 		stage_clear_img = new ImageIcon("images/stage_clear.png").getImage();	
-		boss1 = new ImageIcon("images/ufo_img.jpg").getImage();
+		boss1 = new ImageIcon("images/ufo_img.png").getImage();
 		boss2 = new ImageIcon("images/boss2.png").getImage();
 		boss3 = new ImageIcon("images/boss_body.png").getImage();
 		stage1 = new ImageIcon("images/stage01.png").getImage();
