@@ -252,7 +252,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			en = (Enemy)(Enemy_List.get(i)); 
 	
 			en.move(); //move enemy
-			if(en.x < -200){
+			if(en.x < -10){
 				Enemy_List.remove(i); 
 			}		
 			
@@ -265,8 +265,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			
 			//enemy shoot
 			if ( cnt % 100 == 0){
-				if(en.type <4)
-				{
+				if(en.type <4){
 					ms = new Missile (enemy_missile_img, en.x, en.y + 10, enemy_missile_Speed, 1,0);
 					Missile_List.add(ms);
 				}	
@@ -379,15 +378,12 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		}
 		
 		
-		
-		
-		if(boss_stage == false)
-		{
-			if ( cnt % 100 == 0 ){ //make enemy
+		if(boss_stage == false){
+			if ( cnt % 100 == 0 && KeyQ == false){ //make enemy
 				en = new Enemy(f_width + random.nextInt(20)*10 + 20, random.nextInt(550) + 25, enemy_Speed,random.nextInt(3) + 1);
 				Enemy_List.add(en); 				
 			}		
-			if ( cnt % 170 == 0 ){ //make enemy
+			if ( cnt % 170 == 0 && KeyQ == false ){ //make enemy
 				en = new Enemy(f_width + random.nextInt(7)*10 + 20, random.nextInt(550) + 25, enemy_Speed,random.nextInt(3) + 1);
 				Enemy_List.add(en); 			
 			}
@@ -688,24 +684,34 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		
 		if(KeyQ == true && Q_available > 0){
 			Sound("sound/ultimate_skill.wav",false);
-			for(int i = 0; i < Enemy_List.size(); i++)
-			{
-				Enemy en = ((Enemy) Enemy_List.get(i));
-				
-				if(en.type >= 4)
-				{
-					boss_Hitpoint -= 5;
-				}
-				else if(en.type != 4)
-					Enemy_List.remove(i);
-			}
 			
+			Enemy tmp = null;
+
+			for(int i = 0; i < Enemy_List.size(); i++){
+				Enemy en = ((Enemy) Enemy_List.get(i));
+	
+				if(en.type >= 4)	{
+					tmp = en;
+					boss_Hitpoint -= 5;
+					if(boss_Hitpoint < 1){
+						Enemy_List.remove(i);
+						boss_Status = 2;	//disappeared
+						tmp = null;
+						stage_clear = true;
+					}
+					boss_Hitpoint -= 1;
+				}		
+			}			
+			
+			Enemy_List.clear();
 			Missile_List.clear();
+			if(tmp !=null)
+				Enemy_List.add(tmp);
 			Q_available -= 1;
 			KeyQ = false;
 		}
-		if(KeyT == true) 
-		{
+		
+		if(KeyT == true) {
 			stage_Score += 100;
 			Q_available += 1;
 			KeyT = false;
