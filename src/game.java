@@ -543,16 +543,16 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	}
 	public void Draw_Cand()
 	{
-		buffg.drawImage(plane_img, f_width/2, f_height/2, this);
-		buffg.drawImage(plane_img, f_width/2 + 150, f_height/2, this);
+		buffg.drawImage(plane_cand1, f_width/2 - 300, f_height/2, this);
+		buffg.drawImage(plane_cand2, f_width/2 + 150, f_height/2, this);
 	}
 	public void Draw_Text()
 	{
 		Color white = new Color(255, 255, 255);
 		buffg.setColor(white);
 		buffg.setFont(new Font("Defualt", Font.BOLD, 20));
-		buffg.drawString("Select your plane : ", f_height - 100, f_width - 100);
-		buffg.drawString("1 : left 		2 : right : ", f_height - 300, f_width - 100);
+		buffg.drawString("Select your plane", 500, 450);
+		buffg.drawString("Press Key: 1 - left or 2 - right", 450, 470);
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////
