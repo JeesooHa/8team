@@ -40,6 +40,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	boolean stage_draw = true;
 	
 	boolean boss_stage = false;//false : normal stage, true : boss stage
+	boolean selected = false; // player plane seleccted
 	
 	double m_angle = 0;
 	double d_xy;
@@ -63,6 +64,8 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	
 	//for animation
 	Image plane_img;
+	Image plane_cand1;
+	Image plane_cand2;
 	Image background_img; 
 	Image background_img2; 
 	Image explo_img; 
@@ -119,6 +122,15 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		f_width = 1200;
 		f_height = 600;
 		
+		background_img = new ImageIcon("images/background1.jpg").getImage();
+		plane_cand1 = new ImageIcon("images/plane_img.png").getImage();
+		plane_cand2 = new ImageIcon("images/plane_img2.png").getImage();
+		while(!selected)
+		{
+			
+			KeyProcess();
+			repaint();
+		}
 		//load images
 		plane_img = new ImageIcon("images/plane_img.png").getImage(); 
 		missile_img = new ImageIcon("images/missile_img.png").getImage();
