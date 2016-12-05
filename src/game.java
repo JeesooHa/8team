@@ -125,15 +125,10 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		f_width = 1200;
 		f_height = 600;
 		
-		background_img = new ImageIcon("images/background1.jpg").getImage();
+		//background_img = new ImageIcon("images/background1.jpg").getImage();
 		plane_cand1 = new ImageIcon("images/plane_img.png").getImage();
 		plane_cand2 = new ImageIcon("images/plane_img2.png").getImage();
-		while(!selected)
-		{
-			
-			KeyProcess();
-			repaint();
-		}
+		
 		//load images
 		plane_img = new ImageIcon("images/plane_img.png").getImage(); 
 		missile_img = new ImageIcon("images/missile_img.png").getImage();
@@ -174,16 +169,37 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		addKeyListener(this);	//keyboard event	
 		th = new Thread(this);  //make thread
 		th.start();	// thread start
+		
 	}
 
 	public void run(){ 
 		try{
+			while(!selected)
+			{
+				
+				KeyProcess();
+				repaint();
+				
+				Thread.sleep(20);
+				if(selected_plane == 1)
+				{
+					plane_img = plane_cand1;
+					selected = true;
+				}
+				else if(selected_plane == 2)
+				{
+					plane_img = plane_cand2;
+					selected = true;
+				}
+			}
 			while(!all_stop){ 		
 				KeyProcess();	//get the keyboard value to update position
+				
 				StageDrawProcess();
 				EnemyProcess();
 				MissileProcess();
 				ExplosionProcess();
+				
 				repaint(); 		//repaint plane using new position
 				StageClearProcess();				
 				Thread.sleep(20);	//delay time
@@ -517,12 +533,13 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		Draw_InitBackground();
 		Draw_Cand();
 		Draw_Text();
+		g.drawImage(buffImage, 0, 0, this); //draw image from buffer
 	}
 	
 	public void Draw_InitBackground()
 	{
 		buffg.clearRect(0, 0, f_width, f_height);
-		buffg.drawImage(background_img, bx, 0, this);
+		buffg.drawImage(background_img, 0, 0, this);
 	}
 	public void Draw_Cand()
 	{
