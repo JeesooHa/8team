@@ -33,13 +33,15 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	boolean KeySpace = false; //missile
 	boolean KeyQ = false; //ultimate skill
 	boolean KeyT = false; //test key. score add
-	
+	boolean Key1 = false;
+	boolean Key2 = false;
 	int cnt;	//enemy made loop
 	
 	int stage_status = 1;
 	boolean stage_draw = true;
 	
 	boolean boss_stage = false;//false : normal stage, true : boss stage
+	boolean selected = false; // player plane seleccted
 	
 	double m_angle = 0;
 	double d_xy;
@@ -57,12 +59,16 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	int boss_Hitpoint;
 	int boss_Status = 0;	//0: not appeared, 1: appeared, 2: destroyed
 	int save_cnt = 0;
+	
+	int selected_plane;
 	Thread th; 
 	
 	Toolkit tk = Toolkit.getDefaultToolkit();
 	
 	//for animation
 	Image plane_img;
+	Image plane_cand1;
+	Image plane_cand2;
 	Image background_img; 
 	Image background_img2; 
 	Image explo_img; 
@@ -119,6 +125,10 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		f_width = 1200;
 		f_height = 600;
 		
+		//background_img = new ImageIcon("images/background1.jpg").getImage();
+		plane_cand1 = new ImageIcon("images/plane_img.png").getImage();
+		plane_cand2 = new ImageIcon("images/plane_img2.png").getImage();
+		
 		//load images
 		plane_img = new ImageIcon("images/plane_img.png").getImage(); 
 		missile_img = new ImageIcon("images/missile_img.png").getImage();
@@ -159,16 +169,37 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		addKeyListener(this);	//keyboard event	
 		th = new Thread(this);  //make thread
 		th.start();	// thread start
+		
 	}
 
 	public void run(){ 
 		try{
+			while(!selected)
+			{
+				
+				KeyProcess();
+				repaint();
+				
+				Thread.sleep(20);
+				if(selected_plane == 1)
+				{
+					plane_img = plane_cand1;
+					selected = true;
+				}
+				else if(selected_plane == 2)
+				{
+					plane_img = plane_cand2;
+					selected = true;
+				}
+			}
 			while(!all_stop){ 		
 				KeyProcess();	//get the keyboard value to update position
+				
 				StageDrawProcess();
 				EnemyProcess();
 				MissileProcess();
 				ExplosionProcess();
+				
 				repaint(); 		//repaint plane using new position
 				StageClearProcess();				
 				Thread.sleep(20);	//delay time
@@ -472,6 +503,10 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		
 		if(all_stop == true)
 			Draw_GameOver(g);
+		else if(selected == false)
+		{
+			InitUpdate(g);
+		}
 		else
 			update(g);
 		
@@ -492,6 +527,35 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		
 	}
 	
+	/////////////////draw select plane stage/////////////////////////
+	public void InitUpdate(Graphics g)
+	{
+		Draw_InitBackground();
+		Draw_Cand();
+		Draw_Text();
+		g.drawImage(buffImage, 0, 0, this); //draw image from buffer
+	}
+	
+	public void Draw_InitBackground()
+	{
+		buffg.clearRect(0, 0, f_width, f_height);
+		buffg.drawImage(background_img, 0, 0, this);
+	}
+	public void Draw_Cand()
+	{
+		buffg.drawImage(plane_cand1, f_width/2 - 300, f_height/2, this);
+		buffg.drawImage(plane_cand2, f_width/2 + 150, f_height/2, this);
+	}
+	public void Draw_Text()
+	{
+		Color white = new Color(255, 255, 255);
+		buffg.setColor(white);
+		buffg.setFont(new Font("Defualt", Font.BOLD, 20));
+		buffg.drawString("Select your plane", 500, 450);
+		buffg.drawString("Press Key: 1 - left or 2 - right", 450, 470);
+	}
+	
+	//////////////////////////////////////////////////////////////////////////////////////
 	public void Draw_Stage(){		
 		if(stage_status == 1){			
 			buffg.drawImage(stage1, f_width/2 - stage1.getWidth(null)/2, f_height/2  - stage1.getHeight(null), this);
@@ -516,6 +580,8 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	{			
 		buffg.drawImage(img, f_width/2 - 295, f_height/2, this);
 	}
+	
+	
 	public void Draw_Background(){		
 		buffg.clearRect(0, 0, f_width, f_height);
 		if ( bx > - 600){		
@@ -632,6 +698,12 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			case KeyEvent.VK_T : //Test key, add 100 score
 				KeyT = true;
 				break;
+			case KeyEvent.VK_1 :
+				Key1 = true;
+				break;
+			case KeyEvent.VK_2 :
+				Key2 = true;
+				break;
 		}
 	}
 	
@@ -658,6 +730,12 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 				break;
 			case KeyEvent.VK_T : //test key
 				KeyT = false;
+				break;
+			case KeyEvent.VK_1 :
+				Key1 = false;
+				break;
+			case KeyEvent.VK_2 :
+				Key2 = false;
 				break;
 		}
 	}
@@ -715,6 +793,15 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			stage_Score += 100;
 			Q_available += 1;
 			KeyT = false;
+		}
+		
+		if(Key1 == true)
+		{
+			selected_plane = 1;
+		}
+		if(Key2 == true)
+		{
+			selected_plane = 2;
 		}
 	}
 	
