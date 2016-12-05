@@ -484,6 +484,10 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		
 		if(all_stop == true)
 			Draw_GameOver(g);
+		else if(selected == false)
+		{
+			InitUpdate(g);
+		}
 		else
 			update(g);
 		
@@ -504,6 +508,34 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		
 	}
 	
+	/////////////////draw select plane/////////////////////////
+	public void InitUpdate(Graphics g)
+	{
+		Draw_InitBackground();
+		Draw_Cand();
+		Draw_Text();
+	}
+	
+	public void Draw_InitBackground()
+	{
+		buffg.clearRect(0, 0, f_width, f_height);
+		buffg.drawImage(background_img, bx, 0, this);
+	}
+	public void Draw_Cand()
+	{
+		buffg.drawImage(plane_img, f_width/2, f_height/2, this);
+		buffg.drawImage(plane_img, f_width/2 + 150, f_height/2, this);
+	}
+	public void Draw_Text()
+	{
+		Color white = new Color(255, 255, 255);
+		buffg.setColor(white);
+		buffg.setFont(new Font("Defualt", Font.BOLD, 20));
+		buffg.drawString("Select your plane : ", f_height - 100, f_width - 100);
+		buffg.drawString("1 : left 		2 : right : ", f_height - 300, f_width - 100);
+	}
+	
+	//////////////////////////////////////////////////////////////////////////////////////
 	public void Draw_Stage(){		
 		if(stage_status == 1){			
 			buffg.drawImage(stage1, f_width/2 - stage1.getWidth(null)/2, f_height/2  - stage1.getHeight(null), this);
@@ -528,6 +560,8 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	{			
 		buffg.drawImage(img, f_width/2 - 295, f_height/2, this);
 	}
+	
+	
 	public void Draw_Background(){		
 		buffg.clearRect(0, 0, f_width, f_height);
 		if ( bx > - 600){		
