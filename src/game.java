@@ -7,6 +7,7 @@ import java.awt.event.*;
 import java.util.*;
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 
 public class game {	
@@ -39,7 +40,6 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	
 	int stage_status = 1;
 	boolean stage_draw = true;
-	
 	boolean boss_stage = false;//false : normal stage, true : boss stage
 	boolean selected = false; // player plane seleccted
 	
@@ -160,7 +160,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		enemy_missile_Speed = 7;
 		fire_Speed = 10; 
 		enemy_Speed = 3;
-
+		
 		Sound("sound/BGM01.wav",true);
 	}
 		
@@ -804,10 +804,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			selected_plane = 2;
 		}
 	}
-	
-	
-	
-	
+		
 	public void Sound(String file, boolean Loop){
 
 		Clip clip;
@@ -825,6 +822,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		}
 	}
 	
+
 	public void GameOver(int fd){
 		if(fd <= 0){
 			all_stop = true;
