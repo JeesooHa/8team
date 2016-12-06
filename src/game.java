@@ -559,25 +559,29 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	}
 	
 	/////////////////draw select plane stage/////////////////////////
-	public void InitUpdate(Graphics g){
+	public void InitUpdate(Graphics g)
+	{
 		Draw_InitBackground();
 		Draw_Cand();
 		Draw_Text();
 		g.drawImage(buffImage, 0, 0, this); //draw image from buffer
 	}
 	
-	public void Draw_InitBackground(){
+	public void Draw_InitBackground()
+	{
 		buffg.clearRect(0, 0, f_width, f_height);
 		buffg.drawImage(background_img, 0, 0, this);
 	}
-	public void Draw_Cand(){
+	public void Draw_Cand()
+	{
 		buffg.drawImage(plane_cand1, f_width/2 - 300, f_height/2, this);
 		buffg.drawImage(plane_cand2, f_width/2 + 150, f_height/2, this);
 	}
-	public void Draw_Text(){
+	public void Draw_Text()
+	{
 		Color white = new Color(255, 255, 255);
 		buffg.setColor(white);
-		buffg.setFont(new Font("Defualt", Font.BOLD, 20));
+		buffg.setFont(new Font("Defualt", Font.BOLD, 22));
 		buffg.drawString("Select your plane", 500, 450);
 		buffg.drawString("Press Key: 1 - left or 2 - right", 450, 470);
 	}
