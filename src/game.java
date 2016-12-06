@@ -477,7 +477,8 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 				{
 					KeyProcess();
 					repaint();
-					try{
+					try
+					{
 						Thread.sleep(20);	//delay time
 					}
 					catch (Exception e){}
@@ -515,7 +516,8 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		else if(op == false){
 			OPENING(g);
 		}
-		else if(selected == false){
+		else if(selected == false)
+		{
 			InitUpdate(g);
 		}
 		else
