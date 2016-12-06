@@ -586,7 +586,6 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		buffg.drawString("Press Key: 1 - left or 2 - right", 450, 480);
 	}
 	
-	//////////////////////////////////////////////////////////////////////////////////////
 	public void Draw_Stage(){		
 		if(stage_status == 1){			
 			buffg.drawImage(stage1, f_width/2 - stage1.getWidth(null)/2, f_height/2  - stage1.getHeight(null), this);
