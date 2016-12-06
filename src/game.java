@@ -583,7 +583,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		buffg.setColor(white);
 		buffg.setFont(new Font("Defualt", Font.BOLD, 25));
 		buffg.drawString("Select your plane", 500, 450);
-		buffg.drawString("Press Key: 1 - left or 2 - right", 450, 470);
+		buffg.drawString("Press Key: 1 - left or 2 - right", 450, 480);
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////
