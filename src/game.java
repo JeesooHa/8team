@@ -22,6 +22,8 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	private static int stage = 1;
 	private static int Q_available = 0;
 	
+	boolean op = false;
+	
 	int f_width, f_height;	//frame size
 	int x, y;	//position of plane
 	int bx = 0;	//background move
@@ -36,6 +38,8 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	boolean KeyT = false; //test key. score add
 	boolean Key1 = false;
 	boolean Key2 = false;
+	boolean start_key = false;
+	
 	int cnt;	//enemy made loop
 	
 	int stage_status = 1;
@@ -87,7 +91,10 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	Image stage3;
 	Image start;
 	Image boss_missile_img;
-	
+	Image opening_play;
+	Clip clip;	//BGM
+	Clip sub_sound;
+	boolean clip_start = false;
 	
 	//to save shot missile
 	ArrayList<Missile> Missile_List = new ArrayList();
@@ -149,6 +156,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		stage3 = new ImageIcon("images/stage03.png").getImage();
 		start = new ImageIcon("images/start.png").getImage();
 		boss_missile_img = new ImageIcon("images/boss_laser.png").getImage();
+		opening_play = new ImageIcon("images/opening_img.gif").getImage();
 		
 		//setting
 		stage_Score = 0;
@@ -160,46 +168,47 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		enemy_missile_Speed = 7;
 		fire_Speed = 10; 
 		enemy_Speed = 3;
-		
-		Sound("sound/BGM01.wav",true);
+
 	}
 		
 	public void start(){	
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		addKeyListener(this);	//keyboard event	
 		th = new Thread(this);  //make thread
-		th.start();	// thread start
-		
+		th.start();	// thread start	
 	}
 
 	public void run(){ 
 		try{
-			while(!selected)
-			{
-				
+			MainSound("sound/StarWars_Main_Theme.wav",false);
+			
+			while(!op){
 				KeyProcess();
 				repaint();
-				
 				Thread.sleep(20);
-				if(selected_plane == 1)
-				{
+			}	
+			
+			MainSound("sound/BGM01.wav",true);
+			
+			while(!selected){			
+				KeyProcess();
+				repaint();				
+				Thread.sleep(20);
+				if(selected_plane == 1){
 					plane_img = plane_cand1;
 					selected = true;
 				}
-				else if(selected_plane == 2)
-				{
+				else if(selected_plane == 2){
 					plane_img = plane_cand2;
 					selected = true;
 				}
 			}
 			while(!all_stop){ 		
-				KeyProcess();	//get the keyboard value to update position
-				
+				KeyProcess();	//get the keyboard value to update position			
 				StageDrawProcess();
 				EnemyProcess();
 				MissileProcess();
-				ExplosionProcess();
-				
+				ExplosionProcess();				
 				repaint(); 		//repaint plane using new position
 				StageClearProcess();				
 				Thread.sleep(20);	//delay time
@@ -233,7 +242,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 				ex = new Explosion(x + plane_img.getWidth(null) / 2, y + plane_img.getHeight(null) / 2, 1);
 				Explosion_List.add(ex);
 				Missile_List.remove(i);
-				Sound("sound/explosion_sound.wav",false);
+				SubSound("sound/explosion_sound.wav");
 			}
 				
 			for (int j = 0 ; j < Enemy_List.size(); ++ j){
@@ -270,7 +279,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 					//explosion effect
 					ex = new Explosion(en.x + tmp.getWidth(null) / 2, en.y + tmp.getHeight(null) / 2 , 0);				
 					Explosion_List.add(ex); 
-					Sound("sound/explosion_sound.wav",false);
+					SubSound("sound/explosion_sound.wav");
 				}
 			}			
 		}
@@ -374,7 +383,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 				ex = new Explosion(x+plane_img.getWidth(null) / 2, y+plane_img.getHeight(null)/ 2, 1 );
 				Explosion_List.add(ex);
 				
-				Sound("sound/explosion_sound.wav",false);
+				SubSound("sound/explosion_sound.wav");
 			}
 		}
 		
@@ -503,8 +512,10 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		
 		if(all_stop == true)
 			Draw_GameOver(g);
-		else if(selected == false)
-		{
+		else if(op == false){
+			OPENING(g);
+		}
+		else if(selected == false){
 			InitUpdate(g);
 		}
 		else
@@ -527,27 +538,41 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		
 	}
 	
+	/////////////////draw opening /////////////////////////
+	public void OPENING(Graphics g){
+		Draw_InitBackground();
+		Draw_opening();
+		Draw_Choice();
+		g.drawImage(buffImage, 0, 0, this); //draw image from buffer
+	}
+	public void Draw_opening(){
+		buffg.drawImage(opening_play, f_width/2 - opening_play.getWidth(null)/2, f_height/2 - opening_play.getHeight(null)/2, this);
+	}
+	public void Draw_Choice(){
+		Color white = new Color(255, 255, 255);
+		buffg.setColor(white);
+		buffg.setFont(new Font("Defualt", Font.BOLD, 20));
+		buffg.drawString("Game Start Key", 500, 500);
+		buffg.drawString("Press Key: S", 500, 530);
+	}
+	
 	/////////////////draw select plane stage/////////////////////////
-	public void InitUpdate(Graphics g)
-	{
+	public void InitUpdate(Graphics g){
 		Draw_InitBackground();
 		Draw_Cand();
 		Draw_Text();
 		g.drawImage(buffImage, 0, 0, this); //draw image from buffer
 	}
 	
-	public void Draw_InitBackground()
-	{
+	public void Draw_InitBackground(){
 		buffg.clearRect(0, 0, f_width, f_height);
 		buffg.drawImage(background_img, 0, 0, this);
 	}
-	public void Draw_Cand()
-	{
+	public void Draw_Cand(){
 		buffg.drawImage(plane_cand1, f_width/2 - 300, f_height/2, this);
 		buffg.drawImage(plane_cand2, f_width/2 + 150, f_height/2, this);
 	}
-	public void Draw_Text()
-	{
+	public void Draw_Text(){
 		Color white = new Color(255, 255, 255);
 		buffg.setColor(white);
 		buffg.setFont(new Font("Defualt", Font.BOLD, 20));
@@ -576,14 +601,14 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		buffg.drawImage(stage_clear_img, f_width/2 - stage_clear_img.getWidth(null)/2, f_height/2- stage_clear_img.getHeight(null)/2, this);
 	}
 	
-	public void Draw_StageNum(Image img)
-	{			
+	public void Draw_StageNum(Image img){			
 		buffg.drawImage(img, f_width/2 - 295, f_height/2, this);
 	}
 	
 	
 	public void Draw_Background(){		
 		buffg.clearRect(0, 0, f_width, f_height);
+		
 		if ( bx > - 600){		
 			bx -= 1;
 		}else {			
@@ -610,10 +635,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			if(ms.who == 0) //plane
 				buffg.drawImage(missile_img, ms.x, ms.y, this); 			
 			if(ms.who == 1)//enemy				
-				buffg.drawImage(ms.type, ms.x, ms.y, this);
-				
-			
-			
+				buffg.drawImage(ms.type, ms.x, ms.y, this);	
 		}
 	}
 
@@ -704,6 +726,9 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			case KeyEvent.VK_2 :
 				Key2 = true;
 				break;
+			case KeyEvent.VK_S :
+				start_key = true;
+				break;
 		}
 	}
 	
@@ -737,6 +762,9 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			case KeyEvent.VK_2 :
 				Key2 = false;
 				break;
+			case KeyEvent.VK_S :
+				start_key = false;
+				break;
 		}
 	}
 	
@@ -761,7 +789,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		}
 		
 		if(KeyQ == true && Q_available > 0){
-			Sound("sound/ultimate_skill.wav",false);
+			SubSound("sound/ultimate_skill.wav");
 			
 			Enemy tmp = null;
 
@@ -795,28 +823,44 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			KeyT = false;
 		}
 		
-		if(Key1 == true)
-		{
+		if(Key1 == true){
 			selected_plane = 1;
 		}
-		if(Key2 == true)
-		{
+		if(Key2 == true){
 			selected_plane = 2;
 		}
+		if(start_key == true)
+			op = true;
 	}
 		
-	public void Sound(String file, boolean Loop){
-
-		Clip clip;
+	public void MainSound(String file, boolean Loop){
 
 		try {
+			if(clip_start == true){
+				clip.stop();
+				clip_start = false;
+			}
 			AudioInputStream ais = AudioSystem.getAudioInputStream(new BufferedInputStream(new FileInputStream(file)));
 			clip = AudioSystem.getClip();
 			clip.open(ais);
 			clip.start();
+			clip_start =true;
 
 			if (Loop) clip.loop(-1);	//loop : true - endless
 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void SubSound(String file){
+
+		try {
+			AudioInputStream ais = AudioSystem.getAudioInputStream(new BufferedInputStream(new FileInputStream(file)));
+			sub_sound = AudioSystem.getClip();
+			sub_sound.open(ais);
+			sub_sound.start();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -826,8 +870,9 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	public void GameOver(int fd){
 		if(fd <= 0){
 			all_stop = true;
-			Sound("sound/Game_Over_sound_effect.wav",false);
+			MainSound("sound/Game_Over_sound_effect.wav",false);
 		}
 	}	
+	
 }
 
