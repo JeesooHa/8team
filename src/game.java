@@ -75,6 +75,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	Image plane_cand2;
 	Image background_img; 
 	Image background_img2; 
+	Image background_img3; 
 	Image explo_img; 
 	Image missile_img;
 	Image enemy_img1;
@@ -144,6 +145,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		enemy_img3 = new ImageIcon("images/enemy3.png").getImage();	
 		background_img = new ImageIcon("images/background1.jpg").getImage();
 		background_img2 = new ImageIcon("images/background2.png").getImage();
+		background_img3 = new ImageIcon("images/background3.jpg").getImage();
 		explo_img = new ImageIcon("images/enemy_explosion.png").getImage();
 		enemy_missile_img = new ImageIcon("images/enemy_shot.png").getImage();
 		gameover_img = new ImageIcon("images/game over.png").getImage();
@@ -624,7 +626,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		else if(stage_status == 2)
 			buffg.drawImage(background_img2, bx, 0, this);
 		else
-			buffg.drawImage(background_img, bx, 0, this);
+			buffg.drawImage(background_img3, bx, 0, this);
 			
 	}
 
