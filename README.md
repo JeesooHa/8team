@@ -120,13 +120,13 @@ click the start.jar file.
 
 3. Adding Boss monster - one more image  (done)
 
-4. stage 2 - Background : Image which has long length of width 
+4. stage 2 - Background : Image which has long length of width (done) 
 
 5. Ultimate skill -> Remove all bullets of enemies (done) 
 
-6. Adding two more characters which user can select 
+6. Adding two more characters which user can select (done)
 
-7. Storytelling like starwars.
+7. Storytelling like starwars. (done)
 
 
 
