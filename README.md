@@ -77,6 +77,9 @@ click the start.jar file.
 
 * Ultimate Skill - q (every enemy and missile disappeared)
 
+* Skip opening - v
+
+* Select plane - 1 or 2
 
 
 ##Execute Image
