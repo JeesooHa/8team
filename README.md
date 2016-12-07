@@ -75,9 +75,9 @@ click the start.jar file.
 
 * Shoot - Space bar
 
-* Ultimate Skill - q (every enemy and missile disappeared)
+* Ultimate Skill - Q (every enemy and missile disappeared)
 
-* Skip opening - v
+* Skip opening - S
 
 * Select plane - 1 or 2
 
