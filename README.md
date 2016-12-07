@@ -97,21 +97,25 @@ click the start.jar file.
 
 * Event from using keyboard
  
-* Use Plane_img.png 
+* Use Plane_img.png, plane_img2.png 
 
 * Use missile_img.png
 
 * Shooting missile use spacebar 
 
-* Adding enemies image - Enemy disappeared by own missiles
+* Add enemies image - Enemy disappeared by own missiles
 
-* Adding enemies missile
+* Add enemies missile
 
-* Adding Background music and sound effect
+* Add Background music and sound effect
 
-* Adding stage and stage clear message
+* Add stage and stage clear message
 
-* Adding stage 1 boss
+* Add stage 1 boss
+
+* Add opening like starwars
+
+* Add plane select stage
 
 
 
