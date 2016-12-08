@@ -692,11 +692,13 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			
 			if(cnt % 10 < 5)
 			{
-				
-				Color red = new Color(255,0,0);
-				buffg.setColor(red);
-				buffg.drawString("Warning!", 500, 100);
-				
+				if(sub_cnt < 20)
+				{
+					Color red = new Color(255,0,0);
+					buffg.setColor(red);
+					buffg.drawString("Warning!", 500, 100);
+					sub_cnt += 1;
+				}
 			}
 			//////display for debugging/////////////
 			/*buffg.drawString("Tangle : " + Tangle , 1000, 150);
