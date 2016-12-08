@@ -690,6 +690,9 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		{
 			buffg.drawString("Boss HP : " + boss_Hitpoint , 1000, 130);
 			
+			Color red = new Color(255,0,0);
+			buffg.setColor(red);
+			buffg.drawString("Warning!", 500, 50);
 			//////display for debugging/////////////
 			/*buffg.drawString("Tangle : " + Tangle , 1000, 150);
 			buffg.drawString("x : " + x , 1000, 170);
@@ -697,7 +700,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			buffg.drawString("enx : " + en.x , 1000, 210);
 			buffg.drawString("dxt : " + d_xy , 1000, 230);*/
 		}
-
+		
 	}
 	
 	
