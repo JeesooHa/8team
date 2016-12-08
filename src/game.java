@@ -455,6 +455,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			//////////////////////////////////////////////
 			boss_Status = 0;
 			
+			sub_cnt = 0;
 			for (int i = 0; i< 150; i++)//approximately 3 second wait to prepare
 			{
 				KeyProcess();
