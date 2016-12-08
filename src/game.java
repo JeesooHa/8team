@@ -693,7 +693,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			
 			if(cnt % 10 < 5)
 			{
-				if(sub_cnt < 20)
+				if(sub_cnt < 80)
 				{
 					Color red = new Color(255,0,0);
 					buffg.setColor(red);
