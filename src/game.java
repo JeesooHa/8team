@@ -63,7 +63,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	int boss_Hitpoint;
 	int boss_Status = 0;	//0: not appeared, 1: appeared, 2: destroyed
 	int save_cnt = 0;
-	
+	int sub_cnt = 0;
 	int selected_plane;
 	Thread th; 
 	
@@ -690,9 +690,14 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		{
 			buffg.drawString("Boss HP : " + boss_Hitpoint , 1000, 130);
 			
-			Color red = new Color(255,0,0);
-			buffg.setColor(red);
-			buffg.drawString("Warning!", 500, 50);
+			if(cnt % 10 < 5)
+			{
+				
+				Color red = new Color(255,0,0);
+				buffg.setColor(red);
+				buffg.drawString("Warning!", 500, 100);
+				
+			}
 			//////display for debugging/////////////
 			/*buffg.drawString("Tangle : " + Tangle , 1000, 150);
 			buffg.drawString("x : " + x , 1000, 170);
