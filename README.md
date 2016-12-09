@@ -135,7 +135,7 @@ click the start.jar file.
 
 7. Storytelling like starwars. (done)
 
-
+8. Restart after Gameover
 
 
 
