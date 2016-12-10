@@ -455,6 +455,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			enemy_Speed += 2;
 			enemy_missile_Speed += 2;
 			enemy_Hitpoint += 1;
+			boss_Hitpoint += 1;
 			//////////////////////////////////////////////
 			boss_Status = 0;
 			
