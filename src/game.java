@@ -66,7 +66,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	int sub_cnt = 0;
 	int selected_plane;
 	
-	int enemy_Hitpoint;
+	int enemy_Hitpoint = 1;
 	Thread th; 
 	
 	Toolkit tk = Toolkit.getDefaultToolkit();
