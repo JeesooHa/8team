@@ -707,14 +707,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		if(boss_Status == 1)	
 		{
 			buffg.drawString("Boss HP : " + boss_Hitpoint , 1000, 130);
-			
-			
-			//////display for debugging/////////////
-			/*buffg.drawString("Tangle : " + Tangle , 1000, 150);
-			buffg.drawString("x : " + x , 1000, 170);
-			buffg.drawString("dx : " + dx , 1000, 190);
-			buffg.drawString("enx : " + en.x , 1000, 210);
-			buffg.drawString("dxt : " + d_xy , 1000, 230);*/
+
 		}
 		
 		
