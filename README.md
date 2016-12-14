@@ -30,7 +30,13 @@ Documentator :
 
 [Joohee Lim](http://jssngg.github.io) (Computer Science 16)
 
+## 요약 
 
+프로젝트의목표
+
+프로젝트의지향점에대한설명
+
+영문버전포함
 
 ##Introduction
 
