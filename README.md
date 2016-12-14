@@ -156,7 +156,7 @@ click the start.jar file.
 
 ## Code
 
-###game.java
+###game.java - main
 
 * Event from using keyboard
  
@@ -174,11 +174,20 @@ click the start.jar file.
 
 * Add stage and stage clear message
 
-* Add stage 1 boss
+* Add stage 1 boss,  stage 2 boss,  stage 3 boss
 
 * Add opening like starwars
 
 * Add plane select stage
+
+
+###Enemy.java
+
+
+###Explosion.java
+
+
+###Missile.java
 
 
 
