@@ -8,6 +8,30 @@ Air Force 2017
 
 
 
+##Member && Role
+
+Manager:
+
+[Jeesoo Ha](https://jeesooha.github.io/) (Department of Robotics 13)
+
+Translater:
+
+[Daehan Kim](http://KimDaehan.github.io) (Department of Newspaper Broadcasting 09)
+
+Designer :
+
+[Woojin Jo](https://woojin-jo.github.io/) (Department of Economics 12)
+
+Developer:
+
+[Soonguen Hwang](http://zoowx321.github.io/) (Department of Robotics 13)
+
+Documentator : 
+
+[Joohee Lim](http://jssngg.github.io) (Computer Science 16)
+
+
+
 ##Introduction
 
 This game is projected by "Team8" and name is "Air force 2017"
@@ -136,33 +160,6 @@ click the start.jar file.
 7. Storytelling like starwars. (done)
 
 8. Restart after Gameover
-
-
-
-##Member && Role
-
-Manager:
-
-[Jeesoo Ha](https://jeesooha.github.io/) (Department of Robotics 13)
-
-Translater:
-
-[Daehan Kim](http://KimDaehan.github.io) (Department of Newspaper Broadcasting 09)
-
-Designer :
-
-[Woojin Jo](https://woojin-jo.github.io/) (Department of Economics 12)
-
-Developer:
-
-[Soonguen Hwang](http://zoowx321.github.io/) (Department of Robotics 13)
-
-Documentator : 
-
-[Joohee Lim](http://jssngg.github.io) (Computer Science 16)
-
-
-
 
 
 
