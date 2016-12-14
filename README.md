@@ -182,16 +182,18 @@ click the start.jar file.
 
 
 ###Enemy.java - enemy class
- - enemy position
- - enemy speed
+ - enemy position, speed
  - enemy type(1 = enemy1, 2 = enemy2, 3 = enemy3, 4 = stage 1 boss, 5 = stage 2 boss, 6 = stage 3 boss) 
  - enemy move
 
 ###Explosion.java
-
-
+ - explosion position
+ - explosion damage
+ 
 ###Missile.java
-
+ - missile position, angle, speed
+ - enemy owner
+ - enemy move
 
 
 ##What to do later
