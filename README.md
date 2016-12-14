@@ -114,7 +114,44 @@ click the start.jar file.
 
 ##Execute Image
 
-<img src ="https://github.com/JeesooHa/8team/blob/master/images/execute%20image.JPG" height = "400">
+### Game Start
+
+<img src ="https://github.com/JeesooHa/8team/blob/master/images/result_img/result1.JPG" height = "400">
+
+
+
+### Select Character
+
+<img src ="https://github.com/JeesooHa/8team/blob/master/images/result_img/result2.JPG" height = "400">
+
+
+
+### Start Stage
+
+<img src ="https://github.com/JeesooHa/8team/blob/master/images/result_img/result3.JPG" height = "400">
+
+
+
+### Stage 1 Boss
+
+<img src ="https://github.com/JeesooHa/8team/blob/master/images/result_img/result4.JPG" height = "400">
+
+
+### Stage 2 Boss
+
+<img src ="https://github.com/JeesooHa/8team/blob/master/images/result_img/result5.JPG" height = "400">
+
+
+### Stage 3 Boss
+
+<img src ="https://github.com/JeesooHa/8team/blob/master/images/result_img/result6.JPG" height = "400">
+
+
+
+### Game Over
+
+<img src ="https://github.com/JeesooHa/8team/blob/master/images/result_img/result7.JPG" height = "400">
+
 
 
 ## Code
