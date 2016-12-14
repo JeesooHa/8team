@@ -188,7 +188,9 @@ click the start.jar file.
  
  - enemy speed
  
- - enemy type
+ - enemy type(0 = enemy1, 1 = enemy2, 2 = enemy3, 4 = stage 1 boss, 5 = stage 2 boss, 6 = stage 3 boss) 
+ 
+ - enemy move
 
 ###Explosion.java
 
