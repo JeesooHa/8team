@@ -183,6 +183,12 @@ click the start.jar file.
 
 ###Enemy.java
 
+* enemy class
+ - enemy position
+ 
+ - enemy speed
+ 
+ - enemy type
 
 ###Explosion.java
 
