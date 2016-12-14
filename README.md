@@ -155,10 +155,6 @@ click the start.jar file.
 
 
 ## Code
-###Frame_make.java
-
-* Basical project for studying JAVA GUI Program
-
 
 ###game.java
 
