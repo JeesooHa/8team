@@ -10,6 +10,41 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 
+/*
+=====================
+:mod:'game' 모듈
+===================== 
+  
+.. moduleauthor:: 하지수 <jsha2913@gmail.com>
+  
+  
+설명
+====
+ 
+ 슈팅게임 메인 실행 클래스
+
+
+참고
+====
+
+ 관련링크:
+ * http://blog.naver.com/dosem321/40170781167
+ 
+ 
+관련 작업자
+======== 
+
+ * 하지수 (Jeesoo Ha)
+ * 황순근 (Soonguen Hwang)
+
+작업일지
+--------
+
+ * 2016.09.07 Jeesoo : 메인 클래스 구현 시작
+
+*/
+
+
 public class game {	
 	public static void main(String[] ar){		
 		game_Frame fms = new game_Frame();	
