@@ -328,27 +328,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 						ms = new Missile (boss_missile_img, en.x, en.y + boss1.getHeight(null)/2, enemy_missile_Speed + 3, 1,tmp_a*10);//downward direction
 						Missile_List.add(ms);
 				}
-				////////////get wrong value when get dx and dy////////////////////
-				/*if(cnt % 100 == 0 && en.x == 900 && en.y == 200)//if there is only boss and user
-				{
-
-					//double dx;
-					double dy;
-					//double d_xy;
-					int in_angle = 0;
-					dx = (double) (x - ex.x);
-					dy = (double) (y - ex.y);
-					d_xy = Math.sqrt((dx*dx) + (dy*dy));
-					m_angle = Math.acos(dx/d_xy);
-			
-					in_angle = (int)Math.toDegrees(m_angle);
-					Tangle = in_angle;
-					if(in_angle < 0)
-						in_angle = 360 + in_angle;
-					
-					ms = new Missile (boss_missile_img, en.x, en.y + boss1.getHeight(null)/2, enemy_missile_Speed + 3, 1, in_angle);//to user direction
-					Missile_List.add(ms);
-				}*/
+				
 
 				if(cnt % 40 == 0)
 				{
