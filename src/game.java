@@ -7,7 +7,6 @@ import java.awt.event.*;
 import java.util.*;
 
 import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.FileInputStream;
 
 /*
@@ -52,6 +51,15 @@ public class game {
 }
 
 class game_Frame extends JFrame implements KeyListener, Runnable{ 
+	/*game_Frame 클래스	
+	게임 실행 main 클래스	
+	*/
+	/*
+	:param all_stop: 게임 종료를 나타내는 변수  
+	:param stage_clear: 스테이지 클리어를 나타내는 변수
+	:param stage: 스테이지를 나타내는 변수  
+	:param Q_available: 사용할 수 있는 궁극기를 나타내는 변수  
+	*/
 	private static boolean all_stop = false;
 	private static boolean stage_clear = false;
 	private static int stage = 1;
@@ -64,6 +72,17 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	int bx = 0;	//background move
 	
 	//variable for keyboard input
+	/*
+	:param KeyUp: 캐릭터 위로 이동  
+	:param KeyDown: 캐릭터 아래로 이동  
+	:param KeyLeft: 캐릭터 위로 이동    
+	:param KeyRight: 캐릭터 위로 이동    
+	:param KeySpace: 미사일 발사  
+	:param KeyQ: 궁극기 사용
+	:param Key1: 캐릭터 선택시 1번 캐릭터 선택
+	:param Key2: 캐릭터 선택시 2번 캐릭터 선택  
+	:param start_key: 게임 시작 버튼  
+	*/
 	boolean KeyUp = false; 
 	boolean KeyDown = false;
 	boolean KeyLeft = false;
@@ -204,7 +223,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		  
 		player_Speed = 5; 
 		missile_Speed = 7;
-		enemy_missile_Speed = 7;
+		enemy_missile_Speed = 5;
 		fire_Speed = 10; 
 		enemy_Speed = 3;
 
@@ -354,26 +373,26 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 				int a;
 				Random random_shot = new Random();
 				a = random_shot.nextInt(3);
-				if(cnt % 80 == 0)
+				if(cnt % 120 == 0)
 				{
 					int tmp_a;
 					tmp_a = a+1;
-						ms = new Missile (boss_missile_img, en.x, en.y + boss1.getHeight(null)/2, enemy_missile_Speed + 3, 1,360 - tmp_a*10);//upward direction
+						ms = new Missile (boss_missile_img, en.x, en.y + boss1.getHeight(null)/2, enemy_missile_Speed+3, 1,360 - tmp_a*10);//upward direction
 						Missile_List.add(ms);
-						ms = new Missile (boss_missile_img, en.x, en.y + boss1.getHeight(null)/2, enemy_missile_Speed + 3, 1,tmp_a*10);//downward direction
+						ms = new Missile (boss_missile_img, en.x, en.y + boss1.getHeight(null)/2, enemy_missile_Speed+3, 1,tmp_a*10);//downward direction
 						Missile_List.add(ms);
 				}
 				
 
-				if(cnt % 40 == 0)
+				if(cnt % 80 == 0)
 				{
 					
 					if(a == 0)
-						ms = new Missile (boss_missile_img, en.x, en.y + boss1.getHeight(null)/6, enemy_missile_Speed + 3, 1,0);//direct direction
+						ms = new Missile (boss_missile_img, en.x, en.y + boss1.getHeight(null)/6, enemy_missile_Speed+3, 1,0);//direct direction
 					else if(a == 1)
-						ms = new Missile (boss_missile_img, en.x, en.y + boss1.getHeight(null)/2, enemy_missile_Speed + 3, 1,0);//direct direction
+						ms = new Missile (boss_missile_img, en.x, en.y + boss1.getHeight(null)/2, enemy_missile_Speed+3, 1,0);//direct direction
 					else
-						ms = new Missile (boss_missile_img, en.x, en.y + 5*boss1.getHeight(null)/6, enemy_missile_Speed + 3, 1,0);//direct direction
+						ms = new Missile (boss_missile_img, en.x, en.y + 5*boss1.getHeight(null)/6, enemy_missile_Speed+3, 1,0);//direct direction
 					
 					Missile_List.add(ms);
 				}
