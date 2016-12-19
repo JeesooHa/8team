@@ -28,7 +28,7 @@ import java.awt.Image;
 ======== 
 
  * 하지수 (Jeesoo Ha)
- * 황순근 (Soonguen Hwang)
+ * 황순근 (Soongeun Hwang)
 
 작업일지
 --------
