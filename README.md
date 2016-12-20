@@ -6,7 +6,17 @@
 
 Air Force 2017
 
+##Game Story
 
+Long Long time ago in a galaxy far, far away...
+
+There is an Anxiety factor in the Galactic senate, thousands of solar systems are declaring the passing of a republic.
+
+The things make Earth Oss Knights which is small and limited size, and the rebel army take place for this weakness.
+
+Mr.shin who catched up Mutation Galaxy DNA and his rebel force do a ruthless attack. 
+
+To prevent this devastated situation, the movement of the air force has begun.
 
 ##Member && Role
 
