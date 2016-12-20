@@ -5,7 +5,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 
@@ -40,6 +39,7 @@ import java.io.FileInputStream;
 --------
 
  * 2016.09.07 Jeesoo : 메인 클래스 구현 시작
+ * 2016.12.20 Jeesoo : sphinx 문법으로 주석 수정
 
 */
 
@@ -50,10 +50,11 @@ public class game {
 	}
 }
 
-class game_Frame extends JFrame implements KeyListener, Runnable{ 
+class game_Frame extends JFrame implements KeyListener, Runnable{ 	
 	/*game_Frame 클래스	
 	게임 실행 main 클래스	
 	*/
+	
 	/*
 	:param all_stop: 게임 종료를 나타내는 변수  
 	:param stage_clear: 스테이지 클리어를 나타내는 변수
@@ -65,14 +66,21 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	private static int stage = 1;
 	private static int Q_available = 0;
 	
-	boolean op = false;
-	
-	int f_width, f_height;	//frame size
-	int x, y;	//position of plane
-	int bx = 0;	//background move
-	
-	//variable for keyboard input
 	/*
+	:param op : 오프닝 재생 유무 판단 -> 키 S를 누를시에 opening이 스킵된다.
+	:param f_width, f_height : 게임창의 가로, 세로 크기
+	:param x,y : 플레이어 캐릭터의 위치 저장 변수
+	:param bx : 캐릭터 이동 효과를 위한 배경 이동 위치 변수
+	*/
+	boolean op = false;
+	int f_width = 1200;
+	int f_height = 600;
+	int x = 100;
+	int y = 300;;
+	int bx = 0;
+	
+	/*
+	키보드 이벤트 변수
 	:param KeyUp: 캐릭터 위로 이동  
 	:param KeyDown: 캐릭터 아래로 이동  
 	:param KeyLeft: 캐릭터 위로 이동    
@@ -82,73 +90,121 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	:param Key1: 캐릭터 선택시 1번 캐릭터 선택
 	:param Key2: 캐릭터 선택시 2번 캐릭터 선택  
 	:param start_key: 게임 시작 버튼  
+	
+	:param KeyT : 테스트키, 점수를 더해줌
 	*/
 	boolean KeyUp = false; 
 	boolean KeyDown = false;
 	boolean KeyLeft = false;
 	boolean KeyRight = false;
-	boolean KeySpace = false; //missile
-	boolean KeyQ = false; //ultimate skill
-	boolean KeyT = false; //test key. score add
+	boolean KeySpace = false;
+	boolean KeyQ = false; 
 	boolean Key1 = false;
 	boolean Key2 = false;
 	boolean start_key = false;
 	
-	int cnt;	//enemy made loop
+	boolean KeyT = false;
 	
+	/*
+	:param cnt : 적 생성 주기 변수
+	:param stage_status : 스테이지 상태를 나타내는 변수, 1부터 3까지 스테이지를 표시
+	:param stage_draw : 화면에 stage를 나타냄
+	:param boss_stage : boss가 출몰하면 true가 되면서 보스를 하나만 출몰시킴. false : normal stage, true : boss stage
+	:param selected : 캐릭터 선택시 캐릭터가 선택됨을 표시
+	:param selected_player : 선택된 캐릭터 저장 변수
+	*/
+	int cnt;	
 	int stage_status = 1;
 	boolean stage_draw = true;
-	boolean boss_stage = false;//false : normal stage, true : boss stage
-	boolean selected = false; // player plane seleccted
+	boolean boss_stage = false;
+	boolean selected = false;
+	int selected_player;
 	
-	double m_angle = 0;
-	double d_xy;
-	double dx;
-	//speed setting
-	int player_Speed;
-	int missile_Speed;
-	int enemy_missile_Speed; 
-	int fire_Speed; 
-	int enemy_Speed; 
-	int stage_Score;
-	int total_Score;
-	int player_Hitpoint; 
-	int Tangle = 0;
+	/*
+	초기 게임 설정 
+	:param stage_Score : 각 스테이지의 획득 점수. 다음 스테이지로 넘어갈 시 0이 됨
+	:param total_Score : 종합 점수. 다음 스테이지로 넘어갈 시 stage_Score 점수가 더해짐
+	
+	:param player_Speed : 플레이어 캐릭터의 이동 속도
+	:param player_missile_Speed : 플레이어 캐릭터의 미사일 속도
+	:param player_fire_Speed : 플레이어 캐릭터의 미사일 생성 주기
+	:param player_Hitpoint : 플레이어의 생명력
+	
+	:param enemy_Speed : 적의 이동 속력 
+	:param enemy_missile_Speed : 적 미사일 속력	
+	:param enemy_Hitpoint : 적의 생명력
+	
+	:param boss_Hitpoint : 보스의 생명력. 스테이지 별로 다르게 할당 가능
+	:param boss_Status : 보스의 상태 변수. 0: not appeared, 1: appeared, 2: destroyed
+	
+	:param save_cnt,sub_cnt : 실행 시간 저장을 위한 변수들
+	*/	
+	int stage_Score = 0;
+	int total_Score = 0;
+	
+	int player_Speed = 5;
+	int player_missile_Speed = 7;
+	int player_fire_Speed = 10; 
+	int player_Hitpoint = 3; 
+	
+	int enemy_Speed = 3; 
+	int enemy_missile_Speed = 5; 	
+	int enemy_Hitpoint = 1;
+	
 	int boss_Hitpoint;
-	int boss_Status = 0;	//0: not appeared, 1: appeared, 2: destroyed
+	int boss_Status = 0;
+	
 	int save_cnt = 0;
 	int sub_cnt = 0;
-	int selected_plane;
 	
-	int enemy_Hitpoint = 1;
+	
 	Thread th; 
-	
 	Toolkit tk = Toolkit.getDefaultToolkit();
 	
-	//for animation
-	Image plane_img;
-	Image plane_cand1;
-	Image plane_cand2;
+	/*
+	게임에서 사용되는 이미지들 
+	 
+	*/
+	Image player_img;
+	Image player_cand1;
+	Image player_cand2;
+	
 	Image background_img; 
 	Image background_img2; 
 	Image background_img3; 
+	
 	Image explo_img; 
 	Image missile_img;
+	Image enemy_missile_img;
+	Image boss_missile_img;
+	
 	Image enemy_img1;
 	Image enemy_img2;
 	Image enemy_img3;
-	Image enemy_missile_img;
-	Image gameover_img;
+
 	Image boss1;
 	Image boss2;
 	Image boss3;
+
+	Image start;
+	Image opening_play;
+	Image gameover_img;
 	Image stage_clear_img;
+	
 	Image stage1;
 	Image stage2;
 	Image stage3;
-	Image start;
-	Image boss_missile_img;
-	Image opening_play;
+	
+	/*
+	게임 사운드 clip
+	
+	* clip : 메인 사운드. opening 사운드, 게임 실행 중 사운드, game over 사운드
+	* sub_sound : 서브 사운드. 미사일 발사음, 궁극기 사용 사운드, 폭파 사운드
+	
+	:param clip_start : 메인 사운드의 재생 여부를 판단하는 변수
+
+	*/
+	
 	Clip clip;	//BGM
 	Clip sub_sound;
 	boolean clip_start = false;
@@ -158,18 +214,31 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	ArrayList<Enemy> Enemy_List = new ArrayList();	
 	ArrayList<Explosion> Explosion_List = new ArrayList();
 
-	//for double buffering
+	/*
+	이미지가 사라졌다가 나타났다하는 것을 방지하기 위해 사용된 더블 버퍼링을 위한 변수들
+	*/
 	Image buffImage; 
 	Graphics buffg; 
 	
+	/*	
+	게임을 위한 클래스들 사용
+	
+	* ms : Missile class
+	* en : Enemy class
+	* ex : Explosion class
+	
+	*/
 	Missile ms;	
 	Enemy en;
 	Explosion ex;
 	
-	game_Frame(){	//conductor
+	game_Frame(){
 		init();
 		start();
   
+		/*
+		게임창 설정
+		*/
 		setTitle("Shooting Game");
 		setSize(f_width, f_height);
 		
@@ -183,49 +252,40 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		setVisible(true);
 	}
 	
-	public void init(){	//initial position
-		x = 100; 
-		y = 100;
-		f_width = 1200;
-		f_height = 600;
+	public void init(){
+
+		/*
+		사용할 이미지 불러오기
+		*/
+		player_cand1 = new ImageIcon("images/plane_img.png").getImage();
+		player_cand2 = new ImageIcon("images/plane_img2.png").getImage();
 		
-		//background_img = new ImageIcon("images/background1.jpg").getImage();
-		plane_cand1 = new ImageIcon("images/plane_img.png").getImage();
-		plane_cand2 = new ImageIcon("images/plane_img2.png").getImage();
-		
-		//load images
-		plane_img = new ImageIcon("images/plane_img.png").getImage(); 
 		missile_img = new ImageIcon("images/missile_img.png").getImage();
+		
 		enemy_img1 = new ImageIcon("images/enemy1.png").getImage();
 		enemy_img2 = new ImageIcon("images/enemy2.png").getImage();	
 		enemy_img3 = new ImageIcon("images/enemy3.png").getImage();	
+		
 		background_img = new ImageIcon("images/background1.jpg").getImage();
 		background_img2 = new ImageIcon("images/background2.png").getImage();
 		background_img3 = new ImageIcon("images/background3.jpg").getImage();
+		
 		explo_img = new ImageIcon("images/enemy_explosion.png").getImage();
 		enemy_missile_img = new ImageIcon("images/enemy_shot.png").getImage();
+		
 		gameover_img = new ImageIcon("images/game over.png").getImage();
-		stage_clear_img = new ImageIcon("images/stage_clear.png").getImage();	
+		stage_clear_img = new ImageIcon("images/stage_clear.png").getImage();			
+		start = new ImageIcon("images/start.png").getImage();	
+		opening_play = new ImageIcon("images/opening_img.gif").getImage();
+		
 		boss1 = new ImageIcon("images/ufo_img.png").getImage();
 		boss2 = new ImageIcon("images/boss2.png").getImage();
 		boss3 = new ImageIcon("images/boss_body.png").getImage();
+		boss_missile_img = new ImageIcon("images/boss_laser.png").getImage();
+		
 		stage1 = new ImageIcon("images/stage01.png").getImage();
 		stage2 = new ImageIcon("images/stage02.png").getImage();
 		stage3 = new ImageIcon("images/stage03.png").getImage();
-		start = new ImageIcon("images/start.png").getImage();
-		boss_missile_img = new ImageIcon("images/boss_laser.png").getImage();
-		opening_play = new ImageIcon("images/opening_img.gif").getImage();
-		
-		//setting
-		stage_Score = 0;
-		total_Score = 0;	//initialize game score
-		player_Hitpoint = 3;	
-		  
-		player_Speed = 5; 
-		missile_Speed = 7;
-		enemy_missile_Speed = 5;
-		fire_Speed = 10; 
-		enemy_Speed = 3;
 
 	}
 		
@@ -238,71 +298,101 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 
 	public void run(){ 
 		try{
+			/*
+			게임 시작
+			*/
 			MainSound("sound/StarWars_Main_Theme.wav",false);
 			
+			/*
+			게임 오프닝 재생
+			*/
 			while(!op){
 				KeyProcess();
 				repaint();
 				Thread.sleep(20);
 			}	
-			
+
 			MainSound("sound/BGM01.wav",true);
 			
+			/*
+			캐릭터 선택 단계
+			*/
 			while(!selected){			
 				KeyProcess();
 				repaint();				
 				Thread.sleep(20);
-				if(selected_plane == 1){
-					plane_img = plane_cand1;
+				if(selected_player == 1){
+					player_img = player_cand1;
 					selected = true;
 				}
-				else if(selected_plane == 2){
-					plane_img = plane_cand2;
+				else if(selected_player == 2){
+					player_img = player_cand2;
 					selected = true;
 				}
 			}
+			
+			/*
+			게임 실행 - 게임 종료가 될때 끝남  
+			*/
 			while(!all_stop){ 		
-				KeyProcess();	//get the keyboard value to update position			
+				KeyProcess();		
 				StageDrawProcess();
 				EnemyProcess();
 				MissileProcess();
 				ExplosionProcess();				
-				repaint(); 		//repaint plane using new position
+				repaint(); 		
 				StageClearProcess();				
-				Thread.sleep(20);	//delay time
+				Thread.sleep(20);
 				cnt++;
 			}			
 		}catch (Exception e){}		
 	}	
-	
-	////////// Process ///////////
+	/*
+	# 게임 Process 
+	*/
 	public void MissileProcess(){ 
+		/*
+		## 미사일 생성 Process
+		*/
 		
-		if ( KeySpace == true && (cnt % fire_Speed) == 0 ){ 	//plane shooting					
-			ms = new Missile(missile_img, x + 155, y + 32, missile_Speed, 0, 0); //set missile position
+		/*
+		* 플레이어 캐릭터의 미사일 생성 : spacebar를 누를 경우 미사일이 생성되고 이를 Missile_List에 저장한다. 적의 미사일과 구분하기 위해 ms.who = 0 으로 값 할당
+		*/
+		if ( KeySpace == true && (cnt % player_fire_Speed) == 0 ){ 	//player shooting					
+			ms = new Missile(missile_img, x + 155, y + 32, player_missile_Speed, 0, 0); //set missile position
 			Missile_List.add(ms);   //add missile to list						
 		}
+		/*
+		* Missile_List에 저장된 미사일들을 화면에 그림 : 화면에서 나가거나 적이나 플레이어 캐릭터와 충돌한 미사일들은 삭제한다.  
+		*/
 		
 		for ( int i = 0 ; i < Missile_List.size() ; ++i){
 			ms = (Missile) Missile_List.get(i);
 			ms.move();
 			
-			//end of main frame
+			/*
+			- 화면에서 나간 미사일 삭제
+			 */
 			if ( ms.x > f_width - 20||ms.x<0||ms.y<0||ms.y>f_height){
 				Missile_List.remove(i);
 			}
 			
-			//enemy missile shot
-			if (Crash(x, y, ms.x, ms.y, plane_img, ms.type) && ms.who == 1 ) {
+			/*
+			- 캐릭터가 적의 미사일을 맞을 경우 생명력을 1을 감소하고 폭발 프로세스 한번 실행 
+			- 캐릭터의 생명령이 0이 되었을 경우 게임을 종료하기 위해 GameOver함수로 상태 검사
+			*/
+			if (Crash(x, y, ms.x, ms.y, player_img, ms.type) && ms.who == 1 ) {
 				player_Hitpoint --;
 				GameOver(player_Hitpoint);
 				
-				ex = new Explosion(x + plane_img.getWidth(null) / 2, y + plane_img.getHeight(null) / 2, 1);
+				ex = new Explosion(x + player_img.getWidth(null) / 2, y + player_img.getHeight(null) / 2, 1);
 				Explosion_List.add(ex);
 				Missile_List.remove(i);
 				SubSound("sound/explosion_sound.wav");
 			}
-				
+			/*
+			- 각 미사일에 맞은 적을 판별하여 보통의 적은 삭제, 보스는 생명력을 감소시킨다.	
+			*/
 			for (int j = 0 ; j < Enemy_List.size(); ++ j){
 				en = (Enemy) Enemy_List.get(j);
 				
@@ -313,13 +403,13 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 				else if(en.type == 5)	tmp = boss2;
 				else if(en.type == 6)	tmp = boss3;
 				
-				//plane missile
-				if (Crash(ms.x, ms.y, en.x, en.y, ms.type, tmp) && ms.who==0)
-				{
+				/*
+				- 적이 플레이어 캐릭터의 미사일을 맞은 경우
+				*/					
+				if (Crash(ms.x, ms.y, en.x, en.y, ms.type, tmp) && ms.who==0){
 					Missile_List.remove(i);
 					
-					if((en.type >= 4 ) && boss_Status == 1)
-					{	//boss
+					if((en.type >= 4 ) && boss_Status == 1){	//boss
 						if(boss_Hitpoint < 1){
 							Enemy_List.remove(j);
 							boss_Status = 2;	//disappeared
@@ -339,13 +429,20 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 					Explosion_List.add(ex); 
 					SubSound("sound/explosion_sound.wav");
 				}
-			}			
-		}
+				
+			}//for Enemy
+		}//for Missile
+	
 	}
 	
-	
 	public void EnemyProcess(){
-
+		/*
+		## 적 생성 Process
+		*/
+		
+		/*
+		* Enemy_List에 존재하는 적들을 화면에 그림
+		*/
 		for (int i = 0 ; i < Enemy_List.size() ; ++i ){ 
 			en = (Enemy)(Enemy_List.get(i)); 
 	
@@ -361,46 +458,48 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			else if(en.type == 5)	tmp = boss2;
 			else if(en.type == 6)	tmp = boss3;
 			
-			//enemy shoot
-			if ( cnt % 100 == 0){
-				if(en.type <4){
-					ms = new Missile (enemy_missile_img, en.x, en.y + 10, enemy_missile_Speed, 1,0);
-					Missile_List.add(ms);
-				}	
+			/*
+			- 보통의 적일 경우의 적 미사일 생성
+			*/
+			if ( cnt % 100 == 0 && en.type <4){
+				ms = new Missile (enemy_missile_img, en.x, en.y + 10, enemy_missile_Speed, 1,0);
+				Missile_List.add(ms);
 			}
-			if(en.type >=4)	//boss shot
-			{
+			
+			/*
+			- 보스일 경우의 미사일 생성
+			- 3방향으로 미사일을 쏨
+			*/
+			if(en.type >=4)	{
 				int a;
 				Random random_shot = new Random();
 				a = random_shot.nextInt(3);
-				if(cnt % 120 == 0)
-				{
+				if(cnt % 120 == 0){
 					int tmp_a;
 					tmp_a = a+1;
-						ms = new Missile (boss_missile_img, en.x, en.y + boss1.getHeight(null)/2, enemy_missile_Speed+3, 1,360 - tmp_a*10);//upward direction
-						Missile_List.add(ms);
-						ms = new Missile (boss_missile_img, en.x, en.y + boss1.getHeight(null)/2, enemy_missile_Speed+3, 1,tmp_a*10);//downward direction
-						Missile_List.add(ms);
+					ms = new Missile (boss_missile_img, en.x, en.y + boss1.getHeight(null)/2, enemy_missile_Speed+3, 1,360 - tmp_a*10);//upward direction
+					Missile_List.add(ms);
+					ms = new Missile (boss_missile_img, en.x, en.y + boss1.getHeight(null)/2, enemy_missile_Speed+3, 1,tmp_a*10);//downward direction
+					Missile_List.add(ms);
 				}
 				
-
-				if(cnt % 80 == 0)
-				{
-					
+				if(cnt % 80 == 0){		
 					if(a == 0)
 						ms = new Missile (boss_missile_img, en.x, en.y + boss1.getHeight(null)/6, enemy_missile_Speed+3, 1,0);//direct direction
 					else if(a == 1)
 						ms = new Missile (boss_missile_img, en.x, en.y + boss1.getHeight(null)/2, enemy_missile_Speed+3, 1,0);//direct direction
 					else
-						ms = new Missile (boss_missile_img, en.x, en.y + 5*boss1.getHeight(null)/6, enemy_missile_Speed+3, 1,0);//direct direction
-					
+						ms = new Missile (boss_missile_img, en.x, en.y + 5*boss1.getHeight(null)/6, enemy_missile_Speed+3, 1,0);//direct direction				
 					Missile_List.add(ms);
-				}
-				
+				}			
 			}
-			//crashed with enemy
-			if(Crash(x, y, en.x, en.y, plane_img, tmp)){
-
+			
+			
+			/*
+			- 적이 플레이어의 캐릭터와 충돌할 경우 플레이어의 생명력 감소
+			- 플레이어 캐릭터과 보스와 충돌할 경우는 게임이 종료된다.
+			*/
+			if(Crash(x, y, en.x, en.y, player_img, tmp)){
 				player_Hitpoint --; 
 				GameOver(player_Hitpoint);	
 				
@@ -414,31 +513,29 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 				}
 				else
 					Enemy_List.remove(i);
-				
-							
+										
 				ex = new Explosion(en.x + tmp.getWidth(null) / 2, en.y + tmp.getHeight(null) / 2, 0 );
 				Explosion_List.add(ex); 
-				ex = new Explosion(x+plane_img.getWidth(null) / 2, y+plane_img.getHeight(null)/ 2, 1 );
+				ex = new Explosion(x+player_img.getWidth(null) / 2, y+player_img.getHeight(null)/ 2, 1 );
 				Explosion_List.add(ex);
 				
 				SubSound("sound/explosion_sound.wav");
 			}
 		}
-		
-		Random random = new Random();
 	
+		/*
+		* 각 스테이지별 보스 생성 조건
+		*/
 		//stage 1 boss appeared
-		if(stage_Score>200 && boss_Status == 0 && stage_clear == false && stage == 1)//make boss
-		{
+		if(stage_Score>200 && boss_Status == 0 && stage_clear == false && stage == 1){
 			boss_stage = true;
-			boss_Hitpoint = 50;		
+			boss_Hitpoint = 30;		
 			en = new Enemy(f_width , f_height/3 , enemy_Speed, 4);
 			Enemy_List.add(en);
 			boss_Status = 1;
 		}
 		//stage 2 boss appeared
-		else if(stage_Score>200 && boss_Status == 0 && stage_clear == false&& stage ==2)//make boss
-		{
+		else if(stage_Score>200 && boss_Status == 0 && stage_clear == false&& stage ==2){
 			boss_stage = true;
 			boss_Hitpoint = 50;		
 			en = new Enemy(f_width , f_height/3 , enemy_Speed, 5);
@@ -446,16 +543,19 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			boss_Status = 1;
 		}
 		//stage 3 boss appeared
-		else if(stage_Score>200 && boss_Status == 0 && stage_clear == false&& stage == 3)//make boss
-		{
+		else if(stage_Score>200 && boss_Status == 0 && stage_clear == false&& stage == 3){
 			boss_stage = true;
-			boss_Hitpoint = 50;		
+			boss_Hitpoint = 100;		
 			en = new Enemy(f_width , f_height/3 , enemy_Speed, 6);
 			Enemy_List.add(en);
 			boss_Status = 1;
 		}
 		
 		
+		/*
+		* 보통의 적 생성 - 위치를 random 함수로 해줌으로써 여러 위치에서 적이 나타난다.
+		 */
+		Random random = new Random();
 		if(boss_stage == false){
 			if ( cnt % 100 == 0 && KeyQ == false){ //make enemy
 				en = new Enemy(f_width + random.nextInt(20)*10 + 20, random.nextInt(550) + 25, enemy_Speed,random.nextInt(3) + 1);
@@ -470,14 +570,20 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	}
 	
 	
-	 public void ExplosionProcess(){		  
+	 public void ExplosionProcess(){
+		 /*
+		 # 폭발 Process
+		 */
 		  for (int i = 0 ;  i < Explosion_List.size(); ++i){
 			  ex = (Explosion) Explosion_List.get(i);
-			  ex.effect();
+			  ex.effect();		  
 		  }
-	}
+	 }
 	 
 	 public void StageClearProcess(){
+		 /*
+		 # Stage Clear Process
+		 */
 		if(stage_clear == true){
 			stage++;
 			save_cnt = cnt;			
@@ -485,17 +591,18 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			stage_Score = 0;
 			Enemy_List.clear();
 			Missile_List.clear();
+			
 			/////////difficulty up setting////////////////
 			enemy_Speed += 2;
 			enemy_missile_Speed += 2;
 			enemy_Hitpoint += 1;
 			boss_Hitpoint += 1;
 			//////////////////////////////////////////////
-			boss_Status = 0;
 			
+			boss_Status = 0;		
 			sub_cnt = 0;
-			for (int i = 0; i< 150; i++)//approximately 3 second wait to prepare
-			{
+			//approximately 3 second wait to prepare
+			for (int i = 0; i< 150; i++){
 				KeyProcess();
 				repaint();
 				try{
@@ -512,14 +619,15 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	}
 	 
 	 public void StageDrawProcess(){
+		 /*
+		 # Stage Draw Process
+		 */
 			if(stage_draw == true){
-				
-				for (int i = 0; i< 150; i++)//approximately 3 second wait to prepare
-				{
+				//approximately 3 second wait to prepare
+				for (int i = 0; i< 150; i++){
 					KeyProcess();
 					repaint();
-					try
-					{
+					try{
 						Thread.sleep(20);	//delay time
 					}
 					catch (Exception e){}
@@ -529,11 +637,15 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			
 		}
 	 
-	 //////////// functions ////////////
+	/*
+	# Functions
+	*/
 	 
-	
-	public boolean Crash(int x1, int y1, int x2, int y2, Image img1, Image img2){
 
+	public boolean Crash(int x1, int y1, int x2, int y2, Image img1, Image img2){
+		/*
+		## 충돌 검사 함수
+		*/
 		boolean check = false;
 		
 		if ( Math.abs( ( x1 + img1.getWidth(null) / 2 )  - ( x2 + img2.getWidth(null) / 2 ))  < ( img2.getWidth(null) / 2 + img1.getWidth(null) / 2 )
@@ -545,8 +657,53 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		}
 		return check; 
 	}
+	
+	// ## Main Sound 함수
+	public void MainSound(String file, boolean Loop){
 
-	//////////// draw //////////////
+		try {
+			if(clip_start == true){
+				clip.stop();
+				clip_start = false;
+			}
+			AudioInputStream ais = AudioSystem.getAudioInputStream(new BufferedInputStream(new FileInputStream(file)));
+			clip = AudioSystem.getClip();
+			clip.open(ais);
+			clip.start();
+			clip_start =true;
+
+			if (Loop) clip.loop(-1);	//loop : true - endless
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	// ## SubSound 함수
+	public void SubSound(String file){
+
+		try {
+			AudioInputStream ais = AudioSystem.getAudioInputStream(new BufferedInputStream(new FileInputStream(file)));
+			sub_sound = AudioSystem.getClip();
+			sub_sound.open(ais);
+			sub_sound.start();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	// ## GameOver 판별 함수
+	public void GameOver(int fd){
+		if(fd <= 0){
+			all_stop = true;
+			MainSound("sound/Game_Over_sound_effect.wav",false);
+		}
+	}	
+
+	/*
+	# 그리기 함수
+	*/
 	
 	public void paint(Graphics g){		
 		buffImage = createImage(f_width, f_height); //set double buffer size
@@ -581,7 +738,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		
 	}
 	
-	/////////////////draw opening /////////////////////////
+	// ## opening 재생 함수
 	public void OPENING(Graphics g){
 		Draw_InitBackground();
 		Draw_opening();
@@ -599,35 +756,32 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		buffg.drawString("Press Key: S", 500, 530);
 	}
 	
-	/////////////////draw select plane stage/////////////////////////
-	public void InitUpdate(Graphics g)
-	{
+	// ## 캐릭터 선택시 그리기 함수
+	public void InitUpdate(Graphics g){
 		Draw_InitBackground();
 		Draw_Cand();
 		Draw_Text();
 		g.drawImage(buffImage, 0, 0, this); //draw image from buffer
 	}
 	
-	public void Draw_InitBackground()
-	{
+	public void Draw_InitBackground(){
 		buffg.clearRect(0, 0, f_width, f_height);
 		buffg.drawImage(background_img, 0, 0, this);
 	}
-	public void Draw_Cand()
-	{
-		buffg.drawImage(plane_cand1, f_width/2 - 300, f_height/2, this);
-		buffg.drawImage(plane_cand2, f_width/2 + 150, f_height/2, this);
+	public void Draw_Cand(){
+		buffg.drawImage(player_cand1, f_width/2 - 300, f_height/2, this);
+		buffg.drawImage(player_cand2, f_width/2 + 150, f_height/2, this);
 	}
-	public void Draw_Text()
-	{
+	public void Draw_Text(){
 		Color white = new Color(255, 255, 255);
 		buffg.setColor(white);
 		buffg.setFont(new Font("Defualt", Font.BOLD, 25));
-		buffg.drawString("Select your plane", 500, 450);
+		buffg.drawString("Select your player", 500, 450);
 		buffg.drawString("Press Key: 1 - left or 2 - right", 450, 480);
 		buffg.drawString("Move - Arrow keys  /  Shoot - Space bar  /  Ultimate Skill - Q", 255, 550);
 	}
 	
+	// ## Stage 그리기 함수
 	public void Draw_Stage(){		
 		if(stage_status == 1){			
 			buffg.drawImage(stage1, f_width/2 - stage1.getWidth(null)/2, f_height/2  - stage1.getHeight(null), this);
@@ -639,20 +793,23 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		buffg.drawImage(start, f_width/2 - start.getWidth(null)/2, f_height/2  + start.getHeight(null), this);	
 	}
 	
+	// ## GameOver 그리기 함수
 	public void Draw_GameOver(Graphics g){
 		buffg.clearRect(0, 0, f_width, f_height);
 		buffg.drawImage(gameover_img, 0, 0, this);
 		g.drawImage(buffImage, 0, 0, this); //draw image from buffer
 	}
+	// ## Stage Clear 그리기 함수
 	public void Draw_StageClear(){				
 		buffg.drawImage(stage_clear_img, f_width/2 - stage_clear_img.getWidth(null)/2, f_height/2- stage_clear_img.getHeight(null)/2, this);
 	}
 	
+	// ## Stage number 그리기 함수
 	public void Draw_StageNum(Image img){			
 		buffg.drawImage(img, f_width/2 - 295, f_height/2, this);
 	}
 	
-	
+	// ## Background 그리기 함수 
 	public void Draw_Background(){		
 		buffg.clearRect(0, 0, f_width, f_height);
 		
@@ -666,27 +823,26 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		else if(stage_status == 2)
 			buffg.drawImage(background_img2, bx, 0, this);
 		else
-			buffg.drawImage(background_img3, bx, 0, this);
-			
+			buffg.drawImage(background_img3, bx, 0, this);		
 	}
-
+	// ## 플레이어 캐릭터 그리기 함수
 	public void Draw_Player(){ 
-		buffg.drawImage(plane_img, x, y, this);
+		buffg.drawImage(player_img, x, y, this);
 	}
-	
+	// ## 미사일 그리기 함수
 	public void Draw_Missile(){ 
 		for (int i = 0 ; i < Missile_List.size(); ++i){			
 			//get missile position
 			ms = (Missile) (Missile_List.get(i)); 			
 			//draw missile image to the current position			
-			if(ms.who == 0) //plane
+			if(ms.who == 0) //player
 				buffg.drawImage(missile_img, ms.x, ms.y, this); 			
 			if(ms.who == 1)//enemy				
 				buffg.drawImage(ms.type, ms.x, ms.y, this);	
 		}
 	}
 
-	
+	// ## 적 그리기 함수
 	public void Draw_Enemy(){ 
 		for (int i = 0 ; i < Enemy_List.size() ; ++i ){
 			en = (Enemy)(Enemy_List.get(i));
@@ -702,7 +858,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		}
 	}
 	
-	
+	// ## 폭발 그리기 함수
 	public void Draw_Explosion(){
 		for (int i = 0 ; i < Explosion_List.size() ; ++i ){
 			ex = (Explosion)Explosion_List.get(i);
@@ -717,6 +873,7 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		}
 	}
 	
+	// ## 게임 상태 그리기 함수
 	public void Draw_StatusText(){
 		Color white = new Color(255, 255, 255);
 		buffg.setColor(white);
@@ -725,32 +882,20 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		buffg.drawString("Stage Score : " + stage_Score, 1000, 70);
 		buffg.drawString("HitPoint : " + player_Hitpoint, 1000, 90);
 		buffg.drawString("Ultimate Skill : " + Q_available, 1000, 110);
-		if(stage_Score >= 200)
-		{
-			if(cnt % 10 < 5)
-			{
-				if(sub_cnt < 80)
-				{
-					Color red = new Color(255,0,0);
-					buffg.setColor(red);
-					buffg.drawString("Warning!", 500, 100);
-					sub_cnt += 1;
-				}
-			}
+		if(stage_Score >= 200 && cnt % 10 < 5 && sub_cnt < 80){
+			Color red = new Color(255,0,0);
+			buffg.setColor(red);
+			buffg.drawString("Warning!", 500, 100);
+			sub_cnt += 1;	
 		}
-		if(boss_Status == 1)	
-		{
+		if(boss_Status == 1){
 			buffg.drawString("Boss HP : " + boss_Hitpoint , 1000, 130);
-
-		}
-		
-		
+		}		
 	}
 	
 	
-	//////////////// key event ///////////////
-	
-	
+	// # 키보드 이벤트 함수
+
 	public void keyPressed(KeyEvent e){	//keyboard push event
 
 		switch(e.getKeyCode()){
@@ -766,13 +911,13 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			case KeyEvent.VK_RIGHT :
 				KeyRight = true;
 				break;
-			case KeyEvent.VK_SPACE : //missile
+			case KeyEvent.VK_SPACE :
 				KeySpace = true;
 				break;	
-			case KeyEvent.VK_Q : //ultimate skill
+			case KeyEvent.VK_Q : 
 				KeyQ = true;
 				break;
-			case KeyEvent.VK_T : //Test key, add 100 score
+			case KeyEvent.VK_T : 
 				KeyT = true;
 				break;
 			case KeyEvent.VK_1 :
@@ -802,13 +947,13 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			case KeyEvent.VK_RIGHT :
 				KeyRight = false;
 				break;
-			case KeyEvent.VK_SPACE : //missile
+			case KeyEvent.VK_SPACE :
 				KeySpace = false;
 				break;
-			case KeyEvent.VK_Q : //ultimate
+			case KeyEvent.VK_Q :
 				KeyQ = false;
 				break;
-			case KeyEvent.VK_T : //test key
+			case KeyEvent.VK_T : 
 				KeyT = false;
 				break;
 			case KeyEvent.VK_1 :
@@ -825,14 +970,14 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 	
 	public void keyTyped(KeyEvent e){}	//dealing key event
 
-	public void KeyProcess(){	//plane's move scale
-
+	public void KeyProcess(){	//player's move scale
+		// * 방향이동 - 화살표
 		if(KeyUp == true) {
 			if( y > 20 ) y -= 5;
 		}
 
 		if(KeyDown == true) {
-			if( y+ plane_img.getHeight(null) < f_height ) y += 5;		
+			if( y+ player_img.getHeight(null) < f_height ) y += 5;		
 		}
 
 		if(KeyLeft == true) {
@@ -840,9 +985,10 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 		}
 
 		if(KeyRight == true) {
-			if ( x + plane_img.getWidth(null) < f_width ) x += 5;
+			if ( x + player_img.getWidth(null) < f_width ) x += 5;
 		}
 		
+		// * 궁극기 사용 - Q
 		if(KeyQ == true && Q_available > 0){
 			SubSound("sound/ultimate_skill.wav");
 			
@@ -872,62 +1018,25 @@ class game_Frame extends JFrame implements KeyListener, Runnable{
 			KeyQ = false;
 		}
 		
+		// * 테스트키 - T
 		if(KeyT == true) {
 			stage_Score += 100;
 			Q_available += 1;
 			KeyT = false;
 		}
 		
+		// * 캐릭터 선택키 - 1, 2
 		if(Key1 == true){
-			selected_plane = 1;
+			selected_player = 1;
 		}
 		if(Key2 == true){
-			selected_plane = 2;
+			selected_player = 2;
 		}
+		// * 게임 시작키 - S
 		if(start_key == true)
 			op = true;
 	}
-		
-	public void MainSound(String file, boolean Loop){
-
-		try {
-			if(clip_start == true){
-				clip.stop();
-				clip_start = false;
-			}
-			AudioInputStream ais = AudioSystem.getAudioInputStream(new BufferedInputStream(new FileInputStream(file)));
-			clip = AudioSystem.getClip();
-			clip.open(ais);
-			clip.start();
-			clip_start =true;
-
-			if (Loop) clip.loop(-1);	//loop : true - endless
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 	
-	public void SubSound(String file){
-
-		try {
-			AudioInputStream ais = AudioSystem.getAudioInputStream(new BufferedInputStream(new FileInputStream(file)));
-			sub_sound = AudioSystem.getClip();
-			sub_sound.open(ais);
-			sub_sound.start();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-
-	public void GameOver(int fd){
-		if(fd <= 0){
-			all_stop = true;
-			MainSound("sound/Game_Over_sound_effect.wav",false);
-		}
-	}	
 	
 }
 
