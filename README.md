@@ -49,6 +49,9 @@ Every playing time get new 3 HP points and The game will finished if all that po
 You can use this source wherever you want. Just give us a comment please.
  
 
+##Description
+
+This project is start
 ##Language
 
 JAVA
@@ -199,7 +202,7 @@ click the start.jar file.
  - enemy move
 
 
-##What to do later
+## What we did after Midterm
 
 1. Apeear randomly of enemies. (done)
 
@@ -213,9 +216,11 @@ click the start.jar file.
 
 6. Adding two more characters which user can select (done)
 
-7. Storytelling like starwars. (done)
+7. Storytelling like starwars (done)
 
-8. Restart after Gameover
+8. Restart after Gameover (done)
+
+
 
 
 
