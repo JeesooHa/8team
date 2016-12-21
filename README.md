@@ -51,7 +51,13 @@ You can use this source wherever you want. Just give us a comment please.
 
 ##Description
 
-This project is start
+This project is start to Practice OpenSource Software.
+
+We did these all things as a Desktop open source team. 
+
+The main project term was from september 20th to December 20th.
+
+ 
 ##Language
 
 JAVA
